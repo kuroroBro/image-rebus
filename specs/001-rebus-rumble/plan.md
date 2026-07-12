@@ -162,3 +162,35 @@ rooms from different games never collide on the shared broker.
   obscured the text, and stacking them instead (bow above word) didn't
   read as "around" clearly enough to keep. Also removed the unused
   `images/icons/ribbon.png` since nothing references it.
+- **v1.3** (2026-07-12): Five direct owner revisions to cards from v1.2,
+  each swapping a weaker mechanism for a clearer one:
+  - **FISH OUT OF WATER**: was "DISH" text + fish (a pun on the sound of
+    "dish"/"fish", not actually depicting the idiom). Now a black-outlined
+    oval labeled "WATER" with the fish clearly separated outside it —
+    depicts the idiom directly instead of punning around it.
+  - **ZIP IT**: was the pouch icon + the word "ZIP" (redundant — the
+    zippered pouch already reads as "zip"). Now pouch + "IT", so the icon
+    and text together spell the full two-word answer instead of
+    overlapping in meaning.
+  - **FADE OUT**: was "PROGRAM" fading letter-by-letter (arbitrary word
+    choice, answer wasn't legible from the card itself). Now "OUT"
+    repeated 5 times, each copy more transparent — the literal word in the
+    answer is what's fading, so the card reads correctly on its own.
+  - **BACKSTAB**: was the letters "EFINK" alone (KNIFE backward) — correct
+    but a pure decode puzzle with no image at all, out of step with the
+    rest of the illustrated set. Generated a new `images/icons/knife.png`
+    (background chroma-keyed to transparent after generation, since the
+    prompt only specified a white background, not transparency — a
+    process note worth remembering for future icon generations) and
+    composited it stabbing into the "K" of "BACK".
+  - **BIG DEAL**: was one giant "DEAL" filling the card — "big" was
+    implied only by comparison to the *other* cards, not shown on the
+    card itself. Now a small "DEAL" with an SVG arrow pointing at a much
+    larger "DEAL", so the comparison (and which one is "big") is on the
+    card.
+  - **CROSSROADS**: was road-fork icon + "ROADS" (redundant — the fork
+    already reads as roads crossing). Now a large "X" (reads as "cross")
+    above the plain road-fork icon (reads as "road(s)"), so icon and text
+    each carry half the answer instead of both carrying "roads".
+  All 5 re-verified visually and re-tested (13/13, live Playwright
+  playtest) before committing.

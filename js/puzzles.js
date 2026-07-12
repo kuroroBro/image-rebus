@@ -120,13 +120,13 @@ export const PUZZLES = [
     id: 'backstab',
     answer: 'BACKSTAB',
     image: 'images/cards/card-15.png',
-    description: 'html: Just the letters "EFINK" (KNIFE spelled backward), large, centered.',
+    description: 'ai-icon: images/icons/knife.png (a simple flat dagger/knife, blade angled down-right, white background made transparent) composited via html: the word "BACK" large and centered, with the knife overlaid stabbing diagonally down into the "K".',
   },
   {
     id: 'fade-out',
     answer: 'FADE OUT',
     image: 'images/cards/card-16.png',
-    description: 'html: The word "PROGRAM" in one line, each letter progressively more transparent left to right, the last letter barely visible (opacity 1.0 down to about 0.15 across the 7 letters).',
+    description: 'html: The word "OUT" repeated on 5 lines stacked vertically, each line progressively more transparent top to bottom (opacity 1.0 down to about 0.08).',
   },
   {
     id: 'once-in-a-blue-moon',
@@ -162,7 +162,7 @@ export const PUZZLES = [
     id: 'big-deal',
     answer: 'BIG DEAL',
     image: 'images/cards/card-22.png',
-    description: 'html: Just the word "DEAL" in an enormous font size, filling almost the entire card edge to edge.',
+    description: 'html: A small "DEAL" in the upper-left, an SVG arrow pointing diagonally down-right toward a much larger "DEAL" filling the lower-right — the arrow calls out which one is the "big" one.',
   },
   {
     id: 'stepfather',
@@ -186,18 +186,18 @@ export const PUZZLES = [
     id: 'fish-out-of-water',
     answer: 'FISH OUT OF WATER',
     image: 'images/cards/card-26.png',
-    description: 'ai-icon: images/icons/fish.png (a simple cartoon fish, side view) composited via html with the word "DISH" centered above it.',
+    description: 'ai-icon: images/icons/fish.png (a simple cartoon fish, side view) composited via html: a black-outlined oval labeled "WATER" in the upper-left, with the fish positioned clearly separate/outside it in the lower-right — the gap between them is the point.',
   },
   {
     id: 'zip-it',
     answer: 'ZIP IT',
     image: 'images/cards/card-27.png',
-    description: 'ai-icon: images/icons/pouch.png (a zippered pouch with a visible zipper) composited via html with the word "ZIP" centered below it.',
+    description: 'ai-icon: images/icons/pouch.png (a zippered pouch with a visible zipper — the pouch/zipper itself reads as "zip") composited via html with the word "IT" centered below it.',
   },
   {
     id: 'crossroads',
     answer: 'CROSSROADS',
     image: 'images/cards/card-28.png',
-    description: 'ai-icon: images/icons/road-fork.png (a road viewed from above splitting into two paths, a Y-fork) composited via html with the word "ROADS" centered below it.',
+    description: 'ai-icon: images/icons/road-fork.png (a road viewed from above splitting into two paths, a Y-fork) composited via html with a large letter "X" centered above it — X reads as "cross", the icon reads as "road(s)".',
   },
 ];

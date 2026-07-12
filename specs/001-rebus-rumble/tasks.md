@@ -97,6 +97,24 @@
 - [x] `js/puzzles.js` updated to 28 total puzzles (card-23 .. card-28);
       re-ran the full test suite (13/13) and a live Playwright playtest.
 
+## Phase 9 — Owner revisions to 5 Phase 8 cards (post-launch addition)
+- [x] FISH OUT OF WATER: replaced "DISH"+fish with a "WATER"-labeled oval
+      and the fish positioned outside it (plan.md Changelog v1.3).
+- [x] ZIP IT: replaced redundant "ZIP" caption with "IT" (the pouch icon
+      already reads as "zip").
+- [x] FADE OUT: replaced the fading "PROGRAM" with 5 stacked, progressively
+      transparent copies of "OUT" — the answer's own word now fades.
+- [x] BACKSTAB: replaced the plain "EFINK" text card with a new
+      `images/icons/knife.png` (generated, then background chroma-keyed
+      transparent) stabbing into the "K" of "BACK".
+- [x] BIG DEAL: replaced the single giant "DEAL" with a small "DEAL", an
+      SVG arrow, and a large "DEAL" — the comparison is now on the card.
+- [x] CROSSROADS: replaced redundant "ROADS"+fork with a large "X" (cross)
+      above the plain fork icon (road(s)).
+- [x] All 5 re-optimized (palette sized to content) and re-verified: full
+      test suite (13/13), live 2-tab Playwright playtest, every puzzle
+      image confirmed present on disk.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would
