@@ -81,7 +81,7 @@ rooms from different games never collide on the shared broker.
    accordingly — `image` is the only puzzle field that ever reaches a
    non-Host client, and it now carries zero information about the answer.
 5. **No category selection UI in v1.** With only one built-in puzzle set
-   (14 puzzles, all "classic typographic rebus" style), a category picker
+   (22 puzzles, all "classic typographic rebus" style), a category picker
    would be a screen with nothing to actually choose — deferred until
    there's a second puzzle set worth choosing between (see Non-goals +
    tasks.md Open backlog).
@@ -109,3 +109,21 @@ rooms from different games never collide on the shared broker.
   mid-build from an initial icon-pair design after the user shared
   reference examples (Decision #1); fixed an answer-leaking filename bug
   caught by an automated Display-DOM scan (Decision #4).
+- **v1.1** (2026-07-12): Added 8 more puzzles (22 total) from a user-
+  supplied CSV of additional rebus ideas, all rendered locally (`html:`)
+  since every one was pure typography/layout with no illustrated element:
+  BACKSTAB (word spelled backward), FADE OUT (per-letter opacity
+  gradient), ONCE IN A BLUE MOON (color as the trick — the one card that
+  isn't black-on-white, since blue is load-bearing here, not decoration),
+  SMALL ISSUE (tiny text in a big box), WINDOWPANE (word across a 4-pane
+  window grid), COVER TO COVER (word repeated at the top and bottom edge),
+  CUT PRICE (word with a line struck through it), BIG DEAL (word blown up
+  to fill the card). Of the ~50 ideas in the source CSV, roughly 40 were
+  passed over for having more than one plausible reading (e.g. two
+  candidate answers listed for the same card), needing an illustrated
+  icon this project has no reuse-library for (see Decision #3 discussion —
+  a single-use icon isn't worth generating for one card), or — caught
+  during this round specifically — a repetition trick that doesn't
+  actually decode to its claimed answer ("GIVE" x4 was dropped: unlike
+  "GET IT" x4 → FOUR-GET-IT, there's no phonetic reading of four GIVEs
+  that produces "up").

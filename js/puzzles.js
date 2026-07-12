@@ -109,4 +109,52 @@ export const PUZZLES = [
     image: 'images/cards/card-14.png',
     description: 'html: The letters "F", "A", "L", "L" placed diagonally from upper-left to lower-right, each rotated a bit more than the last (0°, 18°, 38°, 60°), as if tumbling down the card.',
   },
+  {
+    id: 'backstab',
+    answer: 'BACKSTAB',
+    image: 'images/cards/card-15.png',
+    description: 'html: Just the letters "EFINK" (KNIFE spelled backward), large, centered.',
+  },
+  {
+    id: 'fade-out',
+    answer: 'FADE OUT',
+    image: 'images/cards/card-16.png',
+    description: 'html: The word "PROGRAM" in one line, each letter progressively more transparent left to right, the last letter barely visible (opacity 1.0 down to about 0.15 across the 7 letters).',
+  },
+  {
+    id: 'once-in-a-blue-moon',
+    answer: 'ONCE IN A BLUE MOON',
+    image: 'images/cards/card-17.png',
+    description: 'html: A solid blue (#2563eb) card background (instead of the usual white) with the word "MOON" in large white text, centered. Still has the usual black border.',
+  },
+  {
+    id: 'small-issue',
+    answer: 'SMALL ISSUE',
+    image: 'images/cards/card-18.png',
+    description: 'html: A large square black outline box centered on the card, with the lowercase word "issue" in small text centered inside it.',
+  },
+  {
+    id: 'windowpane',
+    answer: 'WINDOWPANE',
+    image: 'images/cards/card-19.png',
+    description: 'html: A large square divided into a 2x2 grid by one vertical and one horizontal black line (like a 4-pane window), with the word "PAIN" centered across the middle of the grid.',
+  },
+  {
+    id: 'cover-to-cover',
+    answer: 'COVER TO COVER',
+    image: 'images/cards/card-20.png',
+    description: 'html: The word "COVER" near the top edge of the card, and the word "COVER" again near the bottom edge, with empty space between them.',
+  },
+  {
+    id: 'cut-price',
+    answer: 'CUT PRICE',
+    image: 'images/cards/card-21.png',
+    description: 'html: The word "PRICE" large and centered, with a red horizontal line cutting through the middle of it at a slight angle, like a strikethrough.',
+  },
+  {
+    id: 'big-deal',
+    answer: 'BIG DEAL',
+    image: 'images/cards/card-22.png',
+    description: 'html: Just the word "DEAL" in an enormous font size, filling almost the entire card edge to edge.',
+  },
 ];

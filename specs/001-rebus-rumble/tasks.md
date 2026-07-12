@@ -59,14 +59,27 @@
 - [ ] Push to `kuroroBro/image-rebus`, confirm GitHub Pages live URL serves
       the current build.
 
+## Phase 7 — Expanded puzzle set from user-supplied CSV (post-launch addition)
+- [x] Reviewed ~50 candidate puzzles from a user-supplied CSV; kept 8 with
+      an unambiguous single answer and a layout achievable in pure
+      HTML/CSS (no illustrated icon needed): BACKSTAB, FADE OUT, ONCE IN A
+      BLUE MOON, SMALL ISSUE, WINDOWPANE, COVER TO COVER, CUT PRICE, BIG
+      DEAL. See plan.md Changelog v1.1 for what was dropped and why.
+- [x] Rendered and visually verified all 8 via the same HTML/CSS +
+      headless-screenshot pipeline as Phase 2; optimized each with a
+      palette sized to its actual content (2-color for pure B&W cards, a
+      16-gray palette for the fade-out gradient, small color palettes for
+      the two cards where color is the puzzle's mechanism).
+- [x] `js/puzzles.js` updated to 22 total puzzles, `image` filenames
+      continuing the opaque `card-NN.png` sequence (card-15 .. card-22).
+- [x] Re-ran the full test suite (13/13) and a live 2-tab Playwright
+      playtest against the expanded deck.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would
   come with it (plan.md Decision #5) — not built until there's a second set
-  worth choosing between. Several strong candidates from the user's
-  reference CSV weren't used in v1 (ambiguous single-answer mapping, or
-  needed an illustrated element rather than pure typography) and are worth
-  revisiting for a v2 set.
+  worth choosing between.
 - Any of the two heavier frameworks from the original brief (Bidding War's
   reveal-token economy, Combo Builder's card hands + modifier deck) — the
   brief asked for the simpler version for this build; these remain
