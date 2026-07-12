@@ -324,3 +324,67 @@ rooms from different games never collide on the shared broker.
   a 2-tab Playwright playtest: hint reveals and timer countdown both sync
   correctly Host→Display, the answer never appears in the Display DOM,
   and the timer/tiles reset to paused/blank on every new puzzle dealt.
+- **v1.9** (2026-07-12):
+  - **CROSSROADS**: Improved the depiction (card-28.png) to use a classic intersecting words layout instead of the red "X" overlaid on "ROADS". It now displays the word "ROADS" twice (horizontally and vertically) intersecting at the central letter "A". Updated `js/puzzles.js` description to match.
+  - **Cards 39-59**: Cleaned, scaled, centered, and recomposited all 21 raw card crops from the reference sheets into the standard 800x800 template with a sharp 6px black border, removing any messy photo margins/clipped edges. Updated comments in `js/puzzles.js` to match.
+  - **Recreated Card 48 (BALLPARK FIGURE)**: Sourced a clean AI-generated icon of spectacles (glasses/specs) at `images/icons/spectacles.png` and composited it above the word "BALL" to generate a brand new card-48.png, resolving a severe cropping issue with the original photo card. Updated `js/puzzles.js` description to match.
+  - **Recreated Card 53 (BRIDGE THE GAP)**: Sourced a clean AI-generated icon of a bridge at `images/icons/bridge.png` and composited it via HTML/Python bridging a physical gap between the words "THE" and "GAP" on top of two horizontal ground lines, providing a highly visual and intuitive depiction of the phrase. Updated `js/puzzles.js` description to match.
+  - **Recreated Card 47 (MIND YOUR OWN BUSINESS)**: Re-rendered the card using the standard clean typographic layout displaying "BUSINESS" centered with a large red "X" overlaid on the letter "I" (meaning "minding" your own "I" in "BUSINESS"). Updated `js/puzzles.js` description to match.
+  - **Recreated Card 50 (FORECLOSED)**: Re-rendered the card using the standard typographic layout, displaying the word "CLOSED" 4 times in a vertical column ("four closed" = "foreclosed"). Updated `js/puzzles.js` description to match.
+  - **Recreated Card 59 (TEA-TIME)**: Re-rendered the card by placing a large letter "T" (representing "tea") next to the standard black clock icon (representing "time") to cleanly and visually depict "TEA-TIME". Updated `js/puzzles.js` description to match.
+  - **Recreated Card 49 (A PENNY FOR YOUR THOUGHTS)**: Sourced a clean AI-generated icon of a thought bubble at `images/icons/thought-bubble.png` and composited the letter "A" next to it, with the word "PENNY" centered inside the thought bubble to represent "A penny for your thoughts". Updated `js/puzzles.js` description to match.
+  - **Recreated Card 58 (SCAREDY-CAT)**: Sourced a clean AI-generated icon of a scaredy-cat (frightened arched cat silhouette) at `images/icons/scaredy-cat.png` and composited the letter "S" next to it to visually represent "SCAREDY-CAT". Updated `js/puzzles.js` description to match.
+  - **9 Improved Cards**:
+    - **HAND OVER FIST** (`card-57.png`): Sourced clean icons of a hand and a fist, and aligned the hand icon vertically above the fist icon.
+    - **AROUND THE WORLD** (`card-45.png`): Sourced a clean globe and arrows icon (`globe-arrows.png`) and composited it centered on the card.
+    - **I SEE YOU** (`card-37.png`): Sourced a clean eye icon, and aligned `[Eye Icon]` + `C` + `U` horizontally.
+    - **ROUNDTOWN** (`card-51.png`): Re-rendered with the word "TOWN" centered inside a clean black circle.
+    - **ARE YOU OK** (`card-46.png`): Sourced a clean OK hand icon, and aligned `R` + `U` + `[OK Hand Icon]` horizontally.
+    - **BALLPARK FIGURE** (`card-48.png`): Recreated to display a clean baseball diamond icon with a large number "9" centered inside it.
+    - **A CENTURY OLD** (`card-56.png`): Recreated with `A` + `100` + `OLD` stacked vertically.
+    - **COVER TO COVER** (`card-20.png`): Recreated with `COVER` + `TO` + `COVER` stacked vertically.
+    - **HAND SHAKE DEAL** (`card-55.png`): Sourced a clean handshake icon and placed it centered above the word "DEAL".
+  - **22 New Card Additions** (`card-60.png` to `card-81.png`): Added 22 new rebus puzzles to the game database, including:
+    - **Tagalog wordplay/idiom crops** decoded from the "Rebus new pics" folder: HATING KAPATID (`card-60`), HABA NG BUHOK (`card-61`), ADVICE (`card-62`), FORGIVE AND FORGET (`card-63`), BIRD'S-EYE VIEW (`card-64` with custom red bird icon), FIRST AID (`card-65`), MISUNDERSTAND (`card-66` with a girl restroom sign representing "MISS" under "STAND"), SCRAMBLED EGGS (`card-67`), 24/7 (`card-68` with 24s in a circle), FOR ONCE IN MY LIFE (`card-69`), and SIT-UPS (`card-70`).
+    - **New requested English phrases**: ON SECOND THOUGHT (`card-71`), SIXTH SENSE (`card-72`), SHOP LIFT (`card-73`), KEEP YOUR EYES ON THE BALL (`card-74`), FORTUNATE (`card-75` with fish icon), DISCOUNT (`card-76`), TRIPOD (`card-77`), ELBOW (`card-78`), METAPHOR (`card-79`), SUMMARY (`card-80`), and LOOK ME IN THE EYE (`card-81` with eye icon containing "ME").
+  - **TRIPOD & ELBOW Layout Adjustments**:
+    - **TRIPOD** (`card-77.png`): Redesigned to stack the word `POD` in 3 rows vertically, resolving crowding.
+    - **ELBOW** (`card-78.png`): Redesigned the letters `B O W` to share the corner letter `O` and form a capital `L` shape (`B` vertically above `O`, `W` horizontally to the right of `O`).
+  - **4 Additional Card Additions** (`card-82.png` to `card-85.png`):
+    - **TIME'S UP** (`card-82.png`): Centered the word "TIMES" with an upward-pointing black arrow next to it.
+    - **SPACESHIP** (`card-83.png`): Spaced the letters in the word "SHIP" far apart as "S  H  I  P".
+    - **COMFORTABLE** (`card-84.png`): Placed the word "COME" next to the word "table" repeated 4 times vertically ("Come for table").
+    - **ONCE IN A BLUE MOON** (`card-85.png`): Centered "MOONCEON" where the letters M-O-O-N at the outer boundaries are blue and the letters C-E in the center are black ("ONCE" inside a blue "MOON").
+  - **Refinements to 5 Cards**:
+    - **MIND YOUR OWN BUSINESS** (`card-47.png`): Re-rendered with all words stacked vertically: "MIND", "YOUR", "OWN", and "BUSINESS" (with a large red "X" overlaid on the letter "I").
+    - **COVER TO COVER** (`card-20.png`): Sourced a clean vector book cover icon (`book-cover.png`) representing the back of an open book cover, and wrote "COVER" on both the left and right cover halves.
+    - **BIRD'S-EYE VIEW** (`card-64.png`): Centered the red bird icon and removed the external "VIEW" text, keeping only the tiny "VIEW" inside the bird's eye.
+    - **SHOPLIFT** (`card-73.png`): Sourced a clean vector crane hook icon (`crane.png`) and composited it at the top, lifting the word "SHOP" below it via two supporting rope lines.
+    - **ON SECOND THOUGHT** (`card-71.png`): Replaced the red pointer arrow with a clean red circle drawn around the second "THOUGHT" word.
+  - **FRIENDSHIP Card Addition** (`card-86.png`):
+    - Sourced a clean vector ship icon (`ship.png`) and composited it next to the word "FRIEND" horizontally centered on the card. Added the puzzle to the database.
+  - **ICECUBE Card Addition** (`card-87.png`):
+    - Rendered the word "ICE" with a superscript "3" next to it (meaning "ICE cubed" = "ICECUBE"). Added the puzzle to the database.
+  - **4 More Card Additions** (`card-88.png` to `card-91.png`):
+    - **EYE SHADOW** (`card-88.png`): Rendered the eye outline icon with a duplicate offset grey shadow behind it.
+    - **IN BETWEEN JOBS** (`card-89.png`): Aligned "JOB  IN  JOB" with the middle "IN" colored red.
+    - **FOR INSTANCE** (`card-90.png`): Rendered "STA4NCE" with the number "4" colored red.
+    - **DOWNLOAD** (`card-91.png`): Aligned "DOWN" above a horizontal divider line and "LOAD" below it. Added all to the database.
+  - **SCREWDRIVER Card Addition** (`card-92.png`):
+    - Sourced clean vector icons of a car (`car.png`) and a screw (`screw.png`). Composited a red screw inside the front window (driver's side) of a black car silhouette. Added to the database.
+  - **BIG FISH IN A SMALL POND Card Addition** (`card-93.png`):
+    - Rendered the text "poFISHnd" with "po" and "nd" small and lowercase, and "FISH" large and uppercase. Added to the database.
+  - **LONGTERM Card Addition** (`card-94.png`):
+    - Rendered an exceptionally tall letter "L" with the word "term" positioned at its lower-left corner in red. Added the database.
+  - **3 Final Card Additions** (`card-95.png` to `card-97.png`):
+    - **FOOLING AROUND** (`card-95.png`): Rendered the word "FOOLING" inside a circular looping arrow drawn mathematically using Pillow.
+    - **TOO BIG TO IGNORE** (`card-96.png`): Aligned "TOO BIG TO IGNORE" horizontally with "BIG" in a massive font and "IGNORE" in a tiny font.
+    - **NO SECOND CHANCE** (`card-97.png`): Stacked "CHANCE" twice vertically, with the second instance crossed out by a large red X. Added all to the database.
+  - **HAYSTACK Card Addition** (`card-97.png`):
+    - Stacked the word "HAY" 4 times vertically (representing a stack of HAY = "HAYSTACK"). Added to the database.
+  - **SWEET TOOTH Card Addition** (`card-98.png`):
+    - Rendered the word "TOOTH" with the double "O" replaced by two cute pink wrapped candy silhouettes. Added to the database.
+  - **FALL IN LINE Card Addition** (`card-99.png`):
+    - Rendered the word "FALL" in red positioned inside the split word "LINE" ("LI FALL NE"). Added to the database.
+  - **TOUCHDOWN Card Addition** (`card-100.png`):
+    - Rendered the word "TOUCH" positioned at the very bottom of the card (lowest part). Added to the database.
