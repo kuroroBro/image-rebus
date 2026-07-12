@@ -118,6 +118,21 @@ rooms from different games never collide on the shared broker.
    while still getting real illustrations. Recorded as a third
    `description` prefix, `ai-icon:`, naming which icon file it composites
    and where the text sits relative to it.
+9. **A fourth source type, `crop:`, for owner-supplied reference sheets
+   that are already finished puzzle art.** The first two reference photos
+   in this project were hand-drawn/photographed puzzle sheets used as a
+   *spec* to redraw from (Decisions #1, #2). The third and fourth
+   reference images were different in kind: pre-made digital grids of
+   already-polished individual puzzle cards (safe+lock icons, real tire
+   photos, emoji), with the owner's explicit instruction to "just crop the
+   images" rather than reproduce them. `description` for these records
+   `crop: <what's in the image> — from the owner-supplied reference sheet
+   (<filename>)` instead of a prompt or layout spec, since there's nothing
+   to regenerate from — the source of truth is the original uploaded
+   image, not a reconstructable recipe. This is a deliberate asymmetry
+   with every other card in this file: if a `crop:` card ever needs
+   fixing, it means re-cropping from the original reference image (kept
+   in the conversation history, not this repo), not editing a prompt.
 
 ## Changelog
 
@@ -234,3 +249,27 @@ rooms from different games never collide on the shared broker.
   fraction to its right with "stand" as the numerator and "2" as the
   denominator — restores the original's "2" = "to" homophone instead of
   spelling it out.
+- **v1.7** (2026-07-12): Two more owner-supplied reference sheets, 21
+  puzzles added (59 total) — see Decision #9 for the new "cropped, not
+  regenerated" source path this introduced. From the first sheet (12
+  cards, 8 duplicating existing answers, kept the existing versions per
+  owner direction): THREE BLIND MICE, TOUCHDOWN, SIX FEET UNDER GROUND
+  (this resolves the exact CSV entry from v1.1 that had to be dropped for
+  being missing a "SIX" — the reference sheet's "FEEEET" turns out to be
+  exactly 6 characters, the trick v1.1 didn't have enough information to
+  reconstruct), WIDE-EYED, OLD AGE, A WALK IN THE PARK, and a second,
+  successful attempt at AROUND THE WORLD (circular arrows around the word,
+  succeeding where the v1.4 ribbon-icon attempt was dropped as unclear —
+  kept as `around-the-world-v2`, a second card with the same answer as
+  the dropped attempt would have had, which is fine since the first one
+  was never shipped). From the second sheet (15 cards, 14 with owner-
+  supplied answers), added all but one: the one card with no confident
+  match (a 2x2 grid of the word "LORD") was skipped rather than guessed
+  at, even though the owner's stated preference for this batch was to
+  trust the answer key over full personal verification — an unlabeled
+  card is a different situation from a labeled-but-unverified one. The
+  other 14 include one inferred rather than owner-labeled: "R" + a dash +
+  an OK hand-gesture emoji, read as ARE YOU OK — the one card missing from
+  the owner's 14-item answer list for that sheet, apparently because it
+  was self-evident enough that the owner asked it conversationally
+  ("Are you okay?") instead of listing it.

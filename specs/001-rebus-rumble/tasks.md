@@ -142,6 +142,36 @@
 - [x] `js/puzzles.js` updated to 32 total puzzles (card-29 .. card-32);
       re-ran the full test suite (13/13) and a live Playwright playtest.
 
+## Phase 12 — TRY TO UNDERSTAND layout fix (post-launch addition)
+- [x] Rebuilt card-31 to match the reference photo's exact side-by-side
+      "Try" + "stand/2" fraction layout instead of the previous stacked
+      "TRY TO" + I/STAND paraphrase (plan.md Changelog v1.6).
+
+## Phase 13 — Two more reference sheets, cropped directly (post-launch addition)
+- [x] Decoded two owner-supplied reference sheets (IMG_2920, IMG_2921 —
+      15 cards each). Cross-referenced against the existing 32-puzzle deck
+      to separate genuinely new answers from ones already covered.
+- [x] Sheet 1 (IMG_2920): 7 new answers built from cropped card art —
+      THREE BLIND MICE, TOUCHDOWN, SIX FEET UNDER GROUND, WIDE-EYED, OLD
+      AGE, A WALK IN THE PARK, AROUND THE WORLD (v2). Per owner direction,
+      skipped the other 8 (duplicate answers already in the deck).
+- [x] Sheet 2 (IMG_2921): 14 of 15 cards added (owner: "crop and add all
+      15, trusting your answer key"). Matched the owner's 14-item answer
+      list to cards by elimination — 13 matched cleanly, plus one card
+      ("R" + dash + OK hand emoji) inferred as ARE YOU OK since it wasn't
+      in the list but was the only unmatched card. Skipped one card (a 2x2
+      "LORD" grid) with no confident match to any remaining answer —
+      distinguished from "trust the answer key" since this card had no
+      answer to trust at all.
+- [x] Introduced a fourth `description` source type, `crop:`, for cards
+      whose source of truth is an uploaded reference image rather than a
+      reconstructable prompt/layout (plan.md Decision #9).
+- [x] All 21 new images cropped with a coordinate grid validated against 3
+      known-good cells before bulk-cropping, optimized to a 64-color
+      adaptive palette (down from ~867KB to ~425KB total for the batch).
+- [x] `js/puzzles.js` updated to 59 total puzzles (card-39 .. card-59);
+      re-ran the full test suite (13/13) and a live Playwright playtest.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would
