@@ -194,3 +194,19 @@ rooms from different games never collide on the shared broker.
     each carry half the answer instead of both carrying "roads".
   All 5 re-verified visually and re-tested (13/13, live Playwright
   playtest) before committing.
+- **v1.4** (2026-07-12): Two more owner revisions, both moving from
+  `ai-icon:` to plain `html:` (no illustration needed after all):
+  - **CROSSROADS**: was "X" above the plain road-fork icon. Now a large
+    red "X" overlaid directly on top of the word "ROADS" — closer to the
+    classic rebus convention of a mark literally crossing out/through a
+    word, and one less asset to maintain.
+  - **HIGH NOON**: was the clock icon + "NOON" below it. Now "NOON"
+    repeated 6 times in one column, each line smaller than the last (150px
+    down to 36px) — a tall, shrinking stack read as an "inverse pyramid":
+    the height and the big-to-small taper both carry "HIGH", "NOON" is
+    the literal repeated word.
+  Neither card uses an icon anymore, so `images/icons/clock.png` and
+  `images/icons/road-fork.png` are now unused — deleted both, leaving only
+  `fish.png`, `knife.png`, `pouch.png` (the 3 icons actually referenced by
+  a puzzle). Re-verified: 13/13 tests, live Playwright playtest, every
+  puzzle image confirmed present.

@@ -180,7 +180,7 @@ export const PUZZLES = [
     id: 'high-noon',
     answer: 'HIGH NOON',
     image: 'images/cards/card-25.png',
-    description: 'ai-icon: images/icons/clock.png (a simple round analog clock face showing exactly 12 o\'clock) composited via html with the word "NOON" centered below it.',
+    description: 'html: The word "NOON" repeated on 6 lines, stacked vertically, each line progressively smaller top to bottom (font-size 150px down to 36px) — a tall inverse-pyramid shape (big/high down to small).',
   },
   {
     id: 'fish-out-of-water',
@@ -198,6 +198,6 @@ export const PUZZLES = [
     id: 'crossroads',
     answer: 'CROSSROADS',
     image: 'images/cards/card-28.png',
-    description: 'ai-icon: images/icons/road-fork.png (a road viewed from above splitting into two paths, a Y-fork) composited via html with a large letter "X" centered above it — X reads as "cross", the icon reads as "road(s)".',
+    description: 'html: The word "ROADS" large and centered, with a large red "X" overlaid directly on top of it, centered — X reads as "cross", "ROADS" is the rest of the word, stated plainly instead of via an icon.',
   },
 ];

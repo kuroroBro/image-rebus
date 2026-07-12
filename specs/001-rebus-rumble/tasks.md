@@ -115,6 +115,18 @@
       test suite (13/13), live 2-tab Playwright playtest, every puzzle
       image confirmed present on disk.
 
+## Phase 10 — CROSSROADS and HIGH NOON simplified to icon-free (post-launch addition)
+- [x] CROSSROADS: replaced "X" + road-fork icon with a large red "X"
+      overlaid directly on the word "ROADS".
+- [x] HIGH NOON: replaced clock icon + "NOON" with "NOON" repeated 6x in
+      one column, tapering from 150px to 36px (inverse-pyramid taper reads
+      as "high").
+- [x] Deleted `images/icons/clock.png` and `images/icons/road-fork.png` —
+      no puzzle references either anymore. `images/icons/` now holds only
+      the 3 icons actually in use (fish, knife, pouch).
+- [x] Re-verified: 13/13 tests, live Playwright playtest, every puzzle
+      image confirmed present on disk.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would
