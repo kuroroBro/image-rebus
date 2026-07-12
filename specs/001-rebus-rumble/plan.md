@@ -226,3 +226,11 @@ rooms from different games never collide on the shared broker.
   blurry "M1Y L1I1F1E" (illegible even in the source photo) and the
   "EYE / eye" / "POT" examples (no confident unambiguous reading found) —
   same judgment call as v1, re-confirmed rather than revisited.
+- **v1.6** (2026-07-12): Corrected TRY TO UNDERSTAND's layout — v1.5 had
+  paraphrased it as "TRY TO" stacked above the same I/STAND fraction the
+  plain UNDERSTAND card uses, substituting a literal "TO" for the
+  original's "2" homophone. The owner caught that this drifted from the
+  reference photo. Rebuilt to match it exactly: "Try" on the left, and a
+  fraction to its right with "stand" as the numerator and "2" as the
+  denominator — restores the original's "2" = "to" homophone instead of
+  spelling it out.

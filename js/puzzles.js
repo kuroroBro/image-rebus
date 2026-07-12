@@ -216,7 +216,7 @@ export const PUZZLES = [
     id: 'try-to-understand',
     answer: 'TRY TO UNDERSTAND',
     image: 'images/cards/card-31.png',
-    description: 'html: "TRY TO" centered near the top, then the same I-over-STAND fraction as the plain "understand" card below it. A fuller variant of that card matching the original reference photo\'s "Try" + stand/2 example; kept as a separate puzzle rather than replacing the simpler UNDERSTAND card.',
+    description: 'html: "Try" on the left, and to its right a fraction with "stand" as the numerator and "2" as the denominator (a horizontal line between them) — matches the original reference photo\'s exact side-by-side layout ("2" is a homophone for "to"). Kept as a separate puzzle rather than replacing the simpler UNDERSTAND card.',
   },
   {
     id: 'once-upon-a-time',
