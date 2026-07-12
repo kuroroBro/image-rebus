@@ -109,7 +109,10 @@ export function hostRoom({ onPeers, onError }, attempt = 0) {
 }
 
 // Join a room as the Display. Calls:
-//   onState(state) — a redacted snapshot from the Host (no answer field)
+//   onState(state, hostNow) — a redacted snapshot from the Host (no answer
+//                             field) plus the Host's clock at broadcast
+//                             time, so the Display can offset-correct its
+//                             own timer countdown to match the Host's.
 //   onClose(message) — connection ended
 // Resolves to { close() }. There is no `send()` — the Display never sends
 // a game action, only an optional goodbye on page unload.
@@ -140,7 +143,7 @@ export function joinRoom(code, { onState, onClose }) {
       conn.on('data', (data) => {
         try {
           const msg = JSON.parse(data);
-          if (msg && msg.t === 'state') onState(msg.state);
+          if (msg && msg.t === 'state') onState(msg.state, msg.hostNow);
         } catch { /* ignore */ }
       });
       conn.on('close', () => {

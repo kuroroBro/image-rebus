@@ -1,4 +1,7 @@
-import { PHASE, createGame, startGame, awardPoint, skipPuzzle } from './game.js';
+import {
+  PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
+  revealLetter, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
+} from './game.js';
 import { PUZZLES } from './puzzles.js';
 import { loadSettings, saveSettings } from './storage.js';
 import { hostRoom, joinRoom, normalizeCode } from './room.js';
@@ -20,6 +23,37 @@ let game = null;        // Host: full state. Display: last redacted snapshot rec
 let room = null;        // { code, broadcast, close } (host) or { close } (display)
 let role = null;        // 'host' | 'display'
 let peerCount = 0;
+let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
+
+// ---------- shared render helper (letter-hint tiles) ----------
+// Takes the *masked* array ({char, isSpace}[]) from game.js's maskedAnswer,
+// not the raw puzzle — this is what keeps the Display's render path
+// identical whether it's driven by the Host's own puzzle or a redacted
+// network snapshot.
+function renderTiles(container, masked) {
+  container.innerHTML = '';
+  if (!masked || masked.length === 0) return;
+  let group = document.createElement('div');
+  group.className = 'tile-word-group';
+  container.appendChild(group);
+  for (const { char, isSpace } of masked) {
+    if (isSpace) {
+      group = document.createElement('div');
+      group.className = 'tile-word-group';
+      container.appendChild(group);
+      continue;
+    }
+    const tile = document.createElement('div');
+    tile.className = 'letter-tile' + (char ? ' revealed' : '');
+    tile.textContent = char || '';
+    group.appendChild(tile);
+  }
+}
+
+function updateTimerDisplay(el, remainingMs) {
+  el.textContent = String(Math.ceil(remainingMs / 1000));
+  el.classList.toggle('timer-urgent', remainingMs > 0 && remainingMs <= 10_000);
+}
 
 // ---------- redaction: what the Display is allowed to see ----------
 // The Host never sends the raw answer — and never sends `puzzle.id` either,
@@ -27,19 +61,28 @@ let peerCount = 0;
 // the answer just as much as the word itself would. `image` is safe as-is:
 // it's an opaque filename (card-01.png, see js/puzzles.js), and the picture
 // it points to is the puzzle everyone's meant to see, not a secret.
+// `masked` only ever contains letters that have already been revealed
+// (plus spaces, which are never secret) — same redaction principle as the
+// answer image, just for hints. Timer fields are never secret.
 function redactState(state) {
   return {
     phase: state.phase,
+    hintsEnabled: state.hintsEnabled,
+    timerSeconds: state.timerSeconds,
+    timerStatus: state.timerStatus,
+    timerDeadline: state.timerDeadline,
     targetScore: state.targetScore,
     teams: state.teams,
     winner: state.winner,
-    puzzle: state.puzzle ? { image: state.puzzle.image } : null,
+    puzzle: state.puzzle
+      ? { image: state.puzzle.image, masked: maskedAnswer(state.puzzle) }
+      : null,
   };
 }
 
 function broadcastState() {
   if (room && role === 'host') {
-    room.broadcast({ t: 'state', state: redactState(game) });
+    room.broadcast({ t: 'state', state: redactState(game), hostNow: Date.now() });
   }
 }
 
@@ -83,6 +126,8 @@ $('btn-host').addEventListener('click', () => {
   $('input-team-a').value = settings.teamNames.a;
   $('input-team-b').value = settings.teamNames.b;
   $('input-target-score').value = String(settings.targetScore || 0);
+  $('input-hints').checked = settings.hintsEnabled;
+  $('input-timer').value = String(settings.timerSeconds || 0);
   $('setup-error').hidden = true;
   showScreen('screen-setup');
 });
@@ -120,6 +165,8 @@ $('btn-setup-back').addEventListener('click', () => showScreen('screen-home'));
 $('btn-start-room').addEventListener('click', () => {
   settings = {
     targetScore: Number($('input-target-score').value),
+    hintsEnabled: $('input-hints').checked,
+    timerSeconds: Number($('input-timer').value),
     teamNames: {
       a: $('input-team-a').value.trim() || 'Team A',
       b: $('input-team-b').value.trim() || 'Team B',
@@ -195,8 +242,17 @@ function renderHostPanel() {
   $('host-score-b').textContent = game.teams.b.score;
   $('host-answer').textContent = puzzle ? puzzle.answer : '';
   $('host-card-image').src = puzzle ? puzzle.image : '';
+  renderTiles($('host-tiles'), maskedAnswer(puzzle));
+  $('btn-reveal-letter').hidden = !game.hintsEnabled;
   $('award-a-name').textContent = game.teams.a.name;
   $('award-b-name').textContent = game.teams.b.name;
+
+  const timerWrap = $('host-timer-wrap');
+  timerWrap.hidden = !game.timerSeconds;
+  if (game.timerSeconds) {
+    updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()));
+    $('btn-start-timer').disabled = game.timerStatus === TIMER_STATUS.RUNNING;
+  }
 }
 
 function afterHostAction() {
@@ -208,6 +264,24 @@ function afterHostAction() {
   }
   broadcastState();
 }
+
+$('btn-reveal-letter').addEventListener('click', () => {
+  if (revealLetter(game)) renderHostPanel();
+  broadcastState();
+});
+
+$('btn-start-timer').addEventListener('click', () => {
+  if (startTimer(game, Date.now())) {
+    renderHostPanel();
+    broadcastState();
+  }
+});
+
+// The Host's clock is the only authority on timer expiry. Both roles
+// otherwise just repaint their own countdown digits every tick from their
+// own clock — nothing is pushed over the network except when the game
+// state actually changes (timer started, or a puzzle dealt). See the tick
+// interval below.
 
 $('btn-skip').addEventListener('click', () => {
   skipPuzzle(game);
@@ -258,13 +332,15 @@ function resetDisplayView() {
   $('display-score-a').textContent = '0';
   $('display-score-b').textContent = '0';
   $('display-target').hidden = true;
+  $('display-timer').hidden = true;
   $('display-waiting').hidden = false;
   $('display-playing').hidden = true;
   $('display-gameover').hidden = true;
 }
 
-function handleDisplayState(state) {
-  game = state;
+function handleDisplayState(state, hostNow) {
+  game = state; // so the shared tick loop below can keep the timer ticking between snapshots
+  clockOffset = (hostNow ?? Date.now()) - Date.now();
 
   const prevA = Number($('display-score-a').textContent) || 0;
   const prevB = Number($('display-score-b').textContent) || 0;
@@ -282,12 +358,18 @@ function handleDisplayState(state) {
   const waiting = $('display-waiting');
   const playing = $('display-playing');
   const over = $('display-gameover');
+  const timerEl = $('display-timer');
 
   if (state.phase === PHASE.PLAYING && state.puzzle) {
     waiting.hidden = true;
     playing.hidden = false;
     over.hidden = true;
     $('display-card-image').src = state.puzzle.image;
+    renderTiles($('display-tiles'), state.puzzle.masked);
+    timerEl.hidden = !state.timerSeconds;
+    if (state.timerSeconds) {
+      updateTimerDisplay(timerEl, timerRemainingMs(state, Date.now() + clockOffset));
+    }
   } else if (state.phase === PHASE.GAMEOVER) {
     waiting.hidden = true;
     playing.hidden = true;
@@ -307,5 +389,24 @@ function handleDisplayClose(message) {
   $('home-error').textContent = message;
   showScreen('screen-home');
 }
+
+// ==================================================================
+// SHARED TICK — repaints the countdown every 250ms on whichever role is
+// active. Only the Host's tick can mutate state (checkTimerExpired); the
+// Display only ever repaints from the last snapshot + its clock offset.
+// ==================================================================
+setInterval(() => {
+  if (!game || game.phase !== PHASE.PLAYING || !game.timerSeconds) return;
+
+  if (role === 'host') {
+    if (checkTimerExpired(game, Date.now())) {
+      afterHostAction();
+    } else {
+      updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()));
+    }
+  } else if (role === 'display') {
+    updateTimerDisplay($('display-timer'), timerRemainingMs(game, Date.now() + clockOffset));
+  }
+}, 250);
 
 showScreen('screen-home');

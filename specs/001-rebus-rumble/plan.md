@@ -134,6 +134,41 @@ rooms from different games never collide on the shared broker.
    fixing, it means re-cropping from the original reference image (kept
    in the conversation history, not this repo), not editing a prompt.
 
+10. **Timer and letter hints, added post-launch, mirror
+    `icon-guess-the-word`'s exact shape rather than inventing a new one.**
+    v1 shipped deliberately without either (see the header comment in the
+    original `js/game.js` and spec.md's Non-goals) — the "Call-out Race"
+    framework this game is built on doesn't need them to function. The
+    owner asked for them anyway once the deck had grown large enough that
+    some rounds run long. Rather than design something bespoke, this
+    reuses the sibling project's proven pattern wholesale:
+    - **Hints**: `revealLetter(state, rng)` picks one *random* remaining
+      blank letter (not left-to-right — sequential reveal makes the answer
+      too predictable), recorded as `puzzle.revealedIndexes`. A
+      `maskedAnswer(puzzle)` helper turns that into a `{char, isSpace}[]`
+      the UI renders as letter tiles — spaces always visible, letters only
+      once revealed. This is the same redaction shape as the puzzle image
+      itself (Decision #4's filename discipline): the Display must never
+      receive an unrevealed letter over the wire, so `redactState` in
+      `js/main.js` sends `masked`, never the raw `answer`.
+    - **Timer**: per-puzzle, optional (`timerSeconds: 0` = disabled
+      entirely, no UI shown). The Host explicitly starts the countdown
+      per round (`startTimer`) rather than it auto-starting on deal — a
+      round shouldn't start ticking while a team is still parsing the
+      *previous* round's outcome. Expiry (`checkTimerExpired`, polled
+      every 250ms from the Host's own clock only) auto-skips with no score
+      change and leaves the new puzzle's timer paused, same as a manual
+      Skip. This required restoring the clock-offset sync pattern
+      (`hostNow: Date.now()` broadcast alongside every state snapshot,
+      `clockOffset = hostNow - Date.now()` computed once on the Display)
+      that v1 had stripped out entirely — ticks are never pushed over the
+      network; both sides just repaint from their own clock plus a fixed
+      offset, using an absolute deadline so drift can't accumulate.
+    - Every existing state transition (award, skip, or timeout) routes
+      through the same `dealPuzzle` function, so a fresh puzzle always
+      starts with `revealedIndexes: []` and `timerStatus: 'paused'` — no
+      code path can leak a hint or a running clock into the next round.
+
 ## Changelog
 
 - **v1** (2026-07-12): Initial build — 14 classic typographic rebus
@@ -273,3 +308,19 @@ rooms from different games never collide on the shared broker.
   the owner's 14-item answer list for that sheet, apparently because it
   was self-evident enough that the owner asked it conversationally
   ("Are you okay?") instead of listing it.
+- **v1.8** (2026-07-12): Added optional per-puzzle timer and letter hints
+  (Decision #10), both off by default and configured per-room on the
+  setup screen. `js/game.js` gained `revealLetter`, `maskedAnswer`,
+  `startTimer`, `checkTimerExpired`, `timerRemainingMs`, and a
+  `TIMER_STATUS` enum, plus 13 new unit tests (26/26 total). `js/room.js`
+  had its `hostNow` clock-offset parameter restored (present in the
+  sibling games, stripped from this project's original no-timer v1).
+  `js/main.js`'s `redactState` now also sends `hintsEnabled`,
+  `timerSeconds`, `timerStatus`, `timerDeadline` (all non-secret) and a
+  `masked` letter array per puzzle — still never the raw `answer` or the
+  descriptive `id`. New UI: a Letter Hints checkbox and Time-per-Puzzle
+  dropdown on setup; a Reveal-a-Letter button, timer readout, and letter
+  tiles on both the Host panel and the Display. Verified end-to-end with
+  a 2-tab Playwright playtest: hint reveals and timer countdown both sync
+  correctly Host→Display, the answer never appears in the Display DOM,
+  and the timer/tiles reset to paused/blank on every new puzzle dealt.

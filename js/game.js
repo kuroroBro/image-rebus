@@ -1,12 +1,19 @@
 // Pure rules engine for Rebus Rumble. No DOM, no network — same convention
-// as the sibling games. Deliberately no timer and no hints (see
-// specs/001-rebus-rumble/plan.md Decision #1): this is the simplest of the
+// as the sibling games. Optional per-puzzle timer and letter hints, same
+// shape as icon-guess-the-word/word-scramble — added post-launch at the
+// owner's request (see specs/001-rebus-rumble/plan.md Decision #10); the
+// original v1 shipped without either, deliberately, as the simplest of the
 // three rebus frameworks the concept was drawn from.
 
 export const PHASE = {
   LOBBY: 'lobby',
   PLAYING: 'playing',
   GAMEOVER: 'gameover',
+};
+
+export const TIMER_STATUS = {
+  PAUSED: 'paused', // not counting down — waiting for the Host to start it
+  RUNNING: 'running',
 };
 
 function shuffle(arr, rng = Math.random) {
@@ -27,6 +34,11 @@ function buildDeck(puzzlePool, rng) {
 export function createGame(settings, puzzlePool, rng = Math.random) {
   return {
     phase: PHASE.LOBBY,
+    hintsEnabled: settings.hintsEnabled ?? false,
+    // null/0 = timer disabled entirely (no timer UI, no auto-skip).
+    timerSeconds: settings.timerSeconds || null,
+    timerStatus: TIMER_STATUS.PAUSED,
+    timerDeadline: null,
     // null/0 = no target — play through the whole deck. Otherwise the
     // first team to reach this score wins instantly.
     targetScore: settings.targetScore || null,
@@ -41,17 +53,22 @@ export function createGame(settings, puzzlePool, rng = Math.random) {
   };
 }
 
-// Copies deck[puzzleIndex] into state.puzzle, or ends the game if the deck
-// is exhausted. Returns false if the game ended, true if a puzzle was
-// dealt. Every transition — award or skip — goes through here.
+// Copies deck[puzzleIndex] into state.puzzle with a fresh revealedIndexes
+// list, or ends the game if the deck is exhausted. Returns false if the
+// game ended, true if a puzzle was dealt. Every transition — award, skip,
+// or timer expiry — goes through here, so every new puzzle always starts
+// with its timer paused, never running: the Host decides when the clock
+// actually starts for the next round.
 function dealPuzzle(state) {
   state.puzzleIndex += 1;
   const next = state.deck[state.puzzleIndex];
+  state.timerStatus = TIMER_STATUS.PAUSED;
+  state.timerDeadline = null;
   if (!next) {
     endGame(state);
     return false;
   }
-  state.puzzle = next;
+  state.puzzle = { ...next, revealedIndexes: [] };
   return true;
 }
 
@@ -78,6 +95,26 @@ export function startGame(state) {
   return true;
 }
 
+// Reveals one random blank letter of the current puzzle's answer (not
+// left-to-right — a fixed order makes the answer too predictable to give
+// away). Spaces are never blank slots to begin with. A no-op (returns
+// false) when hints are off, outside PLAYING, or the answer is already
+// fully revealed — deliberately not an error, so the UI never needs to
+// special-case a disabled control.
+export function revealLetter(state, rng = Math.random) {
+  if (state.phase !== PHASE.PLAYING || !state.hintsEnabled) return false;
+  const { answer, revealedIndexes } = state.puzzle;
+  const blanks = [];
+  for (let i = 0; i < answer.length; i++) {
+    if (answer[i] === ' ') continue;
+    if (!revealedIndexes.includes(i)) blanks.push(i);
+  }
+  if (blanks.length === 0) return false; // fully revealed already
+  const pick = blanks[Math.floor(rng() * blanks.length)];
+  revealedIndexes.push(pick);
+  return true;
+}
+
 export function awardPoint(state, teamId) {
   if (state.phase !== PHASE.PLAYING) return false;
   if (!state.teams[teamId]) return false;
@@ -94,4 +131,50 @@ export function skipPuzzle(state) {
   if (state.phase !== PHASE.PLAYING) return false;
   dealPuzzle(state);
   return true;
+}
+
+// Starts (or restarts) the countdown for the current puzzle. A no-op if
+// there's no timer configured for this game, outside PLAYING, or already
+// running — deliberately not an error, same convention as revealLetter.
+export function startTimer(state, now) {
+  if (state.phase !== PHASE.PLAYING) return false;
+  if (!state.timerSeconds) return false;
+  if (state.timerStatus === TIMER_STATUS.RUNNING) return false;
+  state.timerDeadline = now + state.timerSeconds * 1000;
+  state.timerStatus = TIMER_STATUS.RUNNING;
+  return true;
+}
+
+// Call this periodically (e.g. every 200-250ms) from the Host's own clock
+// only. If the deadline has passed, auto-skips to the next puzzle (no score
+// change) and leaves its timer paused, waiting for the Host to start it
+// again. Returns true if a skip just happened (the caller should re-render
+// and re-broadcast).
+export function checkTimerExpired(state, now) {
+  if (state.phase !== PHASE.PLAYING) return false;
+  if (state.timerStatus !== TIMER_STATUS.RUNNING) return false;
+  if (now < state.timerDeadline) return false;
+  dealPuzzle(state);
+  return true;
+}
+
+// Milliseconds left to show on screen. Full duration while paused (so the
+// Host/Display see the configured length before it starts), 0 if no timer.
+export function timerRemainingMs(state, now) {
+  if (!state.timerSeconds) return 0;
+  if (state.timerStatus !== TIMER_STATUS.RUNNING) return state.timerSeconds * 1000;
+  return Math.max(0, state.timerDeadline - now);
+}
+
+// Letter-slot view of the current puzzle's answer: one entry per character,
+// spaces always shown, letters shown only once revealed. Used by both the
+// Host's own render and (via js/main.js) the redacted snapshot sent to the
+// Display — this is the one place that decides what a blank tile looks
+// like.
+export function maskedAnswer(puzzle) {
+  if (!puzzle) return [];
+  return puzzle.answer.split('').map((char, i) => ({
+    char: char === ' ' ? ' ' : puzzle.revealedIndexes.includes(i) ? char : null,
+    isSpace: char === ' ',
+  }));
 }

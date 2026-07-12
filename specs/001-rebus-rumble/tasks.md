@@ -172,6 +172,34 @@
 - [x] `js/puzzles.js` updated to 59 total puzzles (card-39 .. card-59);
       re-ran the full test suite (13/13) and a live Playwright playtest.
 
+## Phase 14 — Timer and letter hints (post-launch addition)
+- [x] `js/game.js`: added `TIMER_STATUS`, `hintsEnabled`/`timerSeconds`/
+      `timerStatus`/`timerDeadline` state, `revealLetter`, `maskedAnswer`,
+      `startTimer`, `checkTimerExpired`, `timerRemainingMs`. `dealPuzzle`
+      now resets hint/timer state on every new puzzle (award, skip, or
+      timeout alike).
+- [x] 13 new unit tests in `tests/game.test.mjs` (26/26 total passing).
+- [x] `js/storage.js`: `DEFAULT_SETTINGS` gained `hintsEnabled: false`,
+      `timerSeconds: 0`.
+- [x] `js/room.js`: restored the `hostNow` clock-offset parameter on
+      `joinRoom`'s `onState` callback (present in the sibling games,
+      stripped from this project's original v1).
+- [x] `js/main.js`: `redactState` sends `hintsEnabled`, `timerSeconds`,
+      `timerStatus`, `timerDeadline`, and a `masked` letter array per
+      puzzle (never the raw answer or id); `broadcastState` sends
+      `hostNow: Date.now()`; added `renderTiles`/`updateTimerDisplay`
+      helpers, Reveal-a-Letter and Start-Timer click handlers, and a
+      shared 250ms tick that drives `checkTimerExpired` (Host) and
+      countdown repaint (both roles).
+- [x] `index.html` / `css/styles.css`: Letter Hints checkbox and
+      Time-per-Puzzle dropdown on setup; timer readout, Reveal-a-Letter
+      button, and letter tiles added to both the Host panel and Display.
+- [x] Verified with a 2-tab Playwright playtest: hint reveals and timer
+      countdown sync correctly Host→Display, answer never appears in the
+      Display DOM, timer/tiles reset to paused/blank on every new puzzle.
+- [x] plan.md Decision #10 + Changelog v1.8; README.md architecture
+      section corrected (previously said "No timer, no hints").
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would

@@ -1,10 +1,13 @@
 // localStorage persistence for last-used setup choices (team names, target
-// score). No category selection in this version — see spec.md Non-goals.
+// score, hints, timer). No category selection in this version — see
+// spec.md Non-goals.
 
 const SETTINGS_KEY = 'rebus.settings.v1';
 
 export const DEFAULT_SETTINGS = {
   targetScore: 0, // 0/null = no target — play through the whole deck
+  hintsEnabled: false,
+  timerSeconds: 0, // 0/null = no timer
   teamNames: { a: 'Team A', b: 'Team B' },
 };
 

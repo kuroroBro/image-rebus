@@ -299,6 +299,98 @@ h1, h2, h3 {
   margin: 0.6rem 0 0;
 }
 
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+/* ---------- Timer ---------- */
+.timer-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: var(--border-w) solid var(--surface-border);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.timer-display {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 3ch;
+  text-align: center;
+}
+
+.timer-display.timer-urgent {
+  color: var(--team-a);
+  animation: timer-pulse 0.6s ease infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.timer-display-big {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Letter-hint tiles ---------- */
+.tiles-wrap {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+.tile-word-group {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.letter-tile {
+  width: 2.1rem;
+  height: 2.5rem;
+  border: 3px solid var(--surface-border);
+  background: var(--surface);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.letter-tile.revealed {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #2a1a00;
+  animation: tile-pop 0.3s ease;
+}
+
+@keyframes tile-pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.display-view .tiles-wrap-big .letter-tile {
+  width: 3.6rem;
+  height: 4.2rem;
+  font-size: 2rem;
+  border-radius: 12px;
+}
+
 .setup-body {
   flex: 1;
 }
