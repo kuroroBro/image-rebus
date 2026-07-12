@@ -50,7 +50,16 @@ function renderTiles(container, masked) {
   }
 }
 
-function updateTimerDisplay(el, remainingMs) {
+// Shows the countdown, or an infinity glyph when this game has no timer
+// configured at all — the timer readout and Start Timer button are always
+// visible (never hidden), so "no timer" needs its own visible state rather
+// than an empty/zeroed one.
+function updateTimerDisplay(el, remainingMs, hasTimer) {
+  if (!hasTimer) {
+    el.textContent = '∞';
+    el.classList.remove('timer-urgent');
+    return;
+  }
   el.textContent = String(Math.ceil(remainingMs / 1000));
   el.classList.toggle('timer-urgent', remainingMs > 0 && remainingMs <= 10_000);
 }
@@ -247,12 +256,8 @@ function renderHostPanel() {
   $('award-a-name').textContent = game.teams.a.name;
   $('award-b-name').textContent = game.teams.b.name;
 
-  const timerWrap = $('host-timer-wrap');
-  timerWrap.hidden = !game.timerSeconds;
-  if (game.timerSeconds) {
-    updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()));
-    $('btn-start-timer').disabled = game.timerStatus === TIMER_STATUS.RUNNING;
-  }
+  updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()), !!game.timerSeconds);
+  $('btn-start-timer').disabled = !game.timerSeconds || game.timerStatus === TIMER_STATUS.RUNNING;
 }
 
 function afterHostAction() {
@@ -332,7 +337,6 @@ function resetDisplayView() {
   $('display-score-a').textContent = '0';
   $('display-score-b').textContent = '0';
   $('display-target').hidden = true;
-  $('display-timer').hidden = true;
   $('display-waiting').hidden = false;
   $('display-playing').hidden = true;
   $('display-gameover').hidden = true;
@@ -366,10 +370,7 @@ function handleDisplayState(state, hostNow) {
     over.hidden = true;
     $('display-card-image').src = state.puzzle.image;
     renderTiles($('display-tiles'), state.puzzle.masked);
-    timerEl.hidden = !state.timerSeconds;
-    if (state.timerSeconds) {
-      updateTimerDisplay(timerEl, timerRemainingMs(state, Date.now() + clockOffset));
-    }
+    updateTimerDisplay(timerEl, timerRemainingMs(state, Date.now() + clockOffset), !!state.timerSeconds);
   } else if (state.phase === PHASE.GAMEOVER) {
     waiting.hidden = true;
     playing.hidden = true;
@@ -396,16 +397,16 @@ function handleDisplayClose(message) {
 // Display only ever repaints from the last snapshot + its clock offset.
 // ==================================================================
 setInterval(() => {
-  if (!game || game.phase !== PHASE.PLAYING || !game.timerSeconds) return;
+  if (!game || game.phase !== PHASE.PLAYING) return;
 
   if (role === 'host') {
-    if (checkTimerExpired(game, Date.now())) {
+    if (game.timerSeconds && checkTimerExpired(game, Date.now())) {
       afterHostAction();
     } else {
-      updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()));
+      updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()), !!game.timerSeconds);
     }
   } else if (role === 'display') {
-    updateTimerDisplay($('display-timer'), timerRemainingMs(game, Date.now() + clockOffset));
+    updateTimerDisplay($('display-timer'), timerRemainingMs(game, Date.now() + clockOffset), !!game.timerSeconds);
   }
 }, 250);
 
