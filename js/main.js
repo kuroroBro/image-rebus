@@ -1,6 +1,6 @@
 import {
   PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
-  revealLetter, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
+  revealLetter, revealImage, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
 } from './game.js';
 import { PUZZLES } from './puzzles.js';
 import { loadSettings, saveSettings } from './storage.js';
@@ -84,7 +84,11 @@ function redactState(state) {
     teams: state.teams,
     winner: state.winner,
     puzzle: state.puzzle
-      ? { image: state.puzzle.image, masked: maskedAnswer(state.puzzle) }
+      ? {
+          image: state.puzzle.image,
+          masked: maskedAnswer(state.puzzle),
+          imageRevealed: state.puzzle.imageRevealed,
+        }
       : null,
   };
 }
@@ -251,6 +255,7 @@ function renderHostPanel() {
   $('host-score-b').textContent = game.teams.b.score;
   $('host-answer').textContent = puzzle ? puzzle.answer : '';
   $('host-card-image').src = puzzle ? puzzle.image : '';
+  $('host-card-wrap').classList.toggle('blurred', !!puzzle && !puzzle.imageRevealed);
   renderTiles($('host-tiles'), maskedAnswer(puzzle));
   $('btn-reveal-letter').hidden = !game.hintsEnabled;
   $('award-a-name').textContent = game.teams.a.name;
@@ -273,6 +278,13 @@ function afterHostAction() {
 $('btn-reveal-letter').addEventListener('click', () => {
   if (revealLetter(game)) renderHostPanel();
   broadcastState();
+});
+
+$('host-card-wrap').addEventListener('click', () => {
+  if (revealImage(game)) {
+    renderHostPanel();
+    broadcastState();
+  }
 });
 
 $('btn-start-timer').addEventListener('click', () => {
@@ -369,6 +381,7 @@ function handleDisplayState(state, hostNow) {
     playing.hidden = false;
     over.hidden = true;
     $('display-card-image').src = state.puzzle.image;
+    $('display-card-wrap').classList.toggle('blurred', !state.puzzle.imageRevealed);
     renderTiles($('display-tiles'), state.puzzle.masked);
     updateTimerDisplay(timerEl, timerRemainingMs(state, Date.now() + clockOffset), !!state.timerSeconds);
   } else if (state.phase === PHASE.GAMEOVER) {

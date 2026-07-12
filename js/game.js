@@ -68,7 +68,7 @@ function dealPuzzle(state) {
     endGame(state);
     return false;
   }
-  state.puzzle = { ...next, revealedIndexes: [] };
+  state.puzzle = { ...next, revealedIndexes: [], imageRevealed: false };
   return true;
 }
 
@@ -112,6 +112,18 @@ export function revealLetter(state, rng = Math.random) {
   if (blanks.length === 0) return false; // fully revealed already
   const pick = blanks[Math.floor(rng() * blanks.length)];
   revealedIndexes.push(pick);
+  return true;
+}
+
+// Every puzzle deals in blurred, so the Host can get set up (and build a
+// little suspense) before anyone sees the card. The Host taps the image to
+// reveal it — for themselves and the Display at once, since it's sent as
+// part of the normal state broadcast, not a separate message. A no-op once
+// already revealed, same convention as the other actions here.
+export function revealImage(state) {
+  if (state.phase !== PHASE.PLAYING || !state.puzzle) return false;
+  if (state.puzzle.imageRevealed) return false;
+  state.puzzle.imageRevealed = true;
   return true;
 }
 

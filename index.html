@@ -43,7 +43,8 @@
           Display is connected.</li>
         <li>Each card is a classic picture rebus — word position, size,
           repetition, or a number standing in for its sound — that spells
-          out one word or phrase.</li>
+          out one word or phrase. It deals in blurred — the Host taps the
+          card when ready to reveal it to everyone at once.</li>
         <li><strong>Shout it out</strong> — no typing, no buzzers. Teams
           just call out their guess as soon as they think they know it.</li>
         <li>The Host taps <strong>Team A got it</strong> /
@@ -165,8 +166,9 @@
       <p id="host-answer" class="host-answer"></p>
     </div>
 
-    <div id="host-card-wrap" class="card-wrap">
+    <div id="host-card-wrap" class="card-wrap host-card-wrap">
       <img id="host-card-image" class="rebus-card-image" alt="">
+      <div class="reveal-hint"><span class="reveal-hint-icon">👆</span>Tap to reveal</div>
     </div>
 
     <div id="host-tiles" class="tiles-wrap"></div>
@@ -203,6 +205,7 @@
       <div id="display-timer" class="timer-display timer-display-big">∞</div>
       <div id="display-card-wrap" class="card-wrap card-wrap-big">
         <img id="display-card-image" class="rebus-card-image" alt="">
+        <div class="reveal-hint"><span class="reveal-hint-icon">🙈</span>Get ready…</div>
       </div>
       <div id="display-tiles" class="tiles-wrap tiles-wrap-big"></div>
     </div>

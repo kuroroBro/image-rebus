@@ -200,6 +200,36 @@
 - [x] plan.md Decision #10 + Changelog v1.8; README.md architecture
       section corrected (previously said "No timer, no hints").
 
+## Phase 15 — Timer control bugfix + always-visible redesign (post-launch addition)
+- [x] Root-caused "Start Timer / Reveal a Letter don't work" report to a
+      CSS specificity bug: `.timer-wrap { display: flex }` silently beat
+      the browser's own `[hidden]` default, so the timer readout and
+      Start Timer button rendered (with a stale hardcoded "30") even when
+      no timer was configured. Added a global
+      `[hidden] { display: none !important; }` rule (plan.md v1.10).
+- [x] Redesigned per owner direction: timer readout never hides — shows
+      an infinity glyph when unconfigured — and Start Timer is `disabled`
+      in that state instead of a silent no-op. Added `.btn:disabled`
+      styling.
+- [x] Verified with Playwright: default (no timer) state shows ∞ and a
+      disabled button; configured state still works exactly as Phase 14
+      verified it.
+
+## Phase 16 — Tap-to-reveal image blur (post-launch addition)
+- [x] `js/game.js`: puzzles now deal with `imageRevealed: false`; new
+      `revealImage(state)` flips it (no-op outside playing or once already
+      revealed, same convention as `revealLetter`/`startTimer`). 4 new
+      unit tests (30/30 total).
+- [x] `js/main.js`: `redactState` sends `imageRevealed` (not secret);
+      Host taps `#host-card-wrap` to call `revealImage` + broadcast, which
+      reveals for the Display too since it's part of the normal snapshot.
+- [x] `css/styles.css` / `index.html`: `.card-wrap.blurred
+      .rebus-card-image` applies a blur+dim filter; `.reveal-hint` overlay
+      ("Tap to reveal" on Host, "Get ready…" on Display).
+- [x] Verified with a 2-tab Playwright playtest: both screens start
+      blurred, Host tap reveals on both at once, re-tapping is a no-op,
+      and the next puzzle re-blurs.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would
@@ -210,9 +240,3 @@
   brief asked for the simpler version for this build; these remain
   available as a genuinely separate future game concept, not a v2 of this
   one, if ever wanted.
-- Optional timer, matching the sibling games' "Time per Puzzle" setting —
-  deliberately left out of v1 (Decision #7); could be added the same way
-  `icon-guess-the-word` has it, without disturbing the core loop.
-- A hero background image for the home screen, matching the pattern added
-  to `turbo-taboo` / `fluffy-Neanderthal` / `attack-attack` — not built yet
-  for this game, no request for it so far.

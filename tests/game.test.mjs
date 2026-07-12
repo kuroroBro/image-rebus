@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert';
 import {
   PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
-  revealLetter, startTimer, checkTimerExpired, timerRemainingMs, maskedAnswer,
+  revealLetter, revealImage, startTimer, checkTimerExpired, timerRemainingMs, maskedAnswer,
 } from '../js/game.js';
 
 const POOL = [
@@ -188,6 +188,39 @@ test('maskedAnswer shows spaces always, letters only once revealed', () => {
 
 test('maskedAnswer of no puzzle is an empty array', () => {
   assert.deepStrictEqual(maskedAnswer(null), []);
+});
+
+// ---------- image reveal ----------
+
+test('a freshly dealt puzzle image starts unrevealed (blurred)', () => {
+  const game = freshGame();
+  startGame(game);
+  assert.strictEqual(game.puzzle.imageRevealed, false);
+});
+
+test('revealImage reveals the current puzzle image and is a no-op once already revealed', () => {
+  const game = freshGame();
+  startGame(game);
+  assert.strictEqual(revealImage(game), true);
+  assert.strictEqual(game.puzzle.imageRevealed, true);
+  assert.strictEqual(revealImage(game), false); // already revealed
+});
+
+test('revealImage is a no-op outside playing', () => {
+  const game = freshGame();
+  assert.strictEqual(revealImage(game), false); // still in lobby
+});
+
+test('a fresh puzzle always starts with its image unrevealed, even after revealing the previous one', () => {
+  const game = freshGame({}, [
+    { id: 'p1', answer: 'AB' },
+    { id: 'p2', answer: 'CD' },
+  ]);
+  startGame(game);
+  revealImage(game);
+  assert.strictEqual(game.puzzle.imageRevealed, true);
+  skipPuzzle(game);
+  assert.strictEqual(game.puzzle.imageRevealed, false);
 });
 
 // ---------- timer ----------

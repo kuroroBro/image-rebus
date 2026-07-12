@@ -388,3 +388,36 @@ rooms from different games never collide on the shared broker.
     - Rendered the word "FALL" in red positioned inside the split word "LINE" ("LI FALL NE"). Added to the database.
   - **TOUCHDOWN Card Addition** (`card-100.png`):
     - Rendered the word "TOUCH" positioned at the very bottom of the card (lowest part). Added to the database.
+- **v1.10** (2026-07-12): Fixed a real bug reported by the owner —
+  "Start Timer and Reveal a Letter don't work" — plus a UX redesign of
+  the same control. Root cause: `.timer-wrap` sets `display: flex`
+  unconditionally, which has the same CSS specificity as the browser's
+  own `[hidden] → display:none` default and comes later in the cascade,
+  so it silently won — `#host-timer-wrap` (with a stale hardcoded "30"
+  placeholder baked into the HTML) rendered even when the Host never
+  configured a timer, and tapping the always-visible Start Timer button
+  was a harmless no-op against `timerSeconds: 0`. Fixed two ways: added
+  a global `[hidden] { display: none !important; }` rule so no future
+  class can out-rank the attribute, and — per owner direction ("just
+  disable the start button and put infinite if there is no timer") —
+  redesigned the control to never hide at all: the timer readout always
+  shows (an infinity glyph when no timer is configured) and Start Timer
+  is `disabled` rather than a silent no-op in that state. Also added
+  `.btn:disabled` styling, since nothing used the `disabled` attribute
+  before this.
+- **v1.11** (2026-07-12): Added a tap-to-reveal blur on the puzzle image,
+  per owner request ("add a blur if not yet started, or host can tap the
+  image to reveal"). Every dealt puzzle now starts with
+  `puzzle.imageRevealed: false`; a new `revealImage(state)` in
+  `js/game.js` (same no-op-outside-playing/no-op-once-already-done
+  convention as `revealLetter`/`startTimer`) flips it to `true`. The
+  Host taps `#host-card-wrap` to reveal — this reveals for the Display
+  too, since `imageRevealed` rides along in the normal state broadcast
+  rather than needing a separate message. The answer *text* on the
+  Host's own screen was never blurred or gated by this — only the image,
+  which is the part a Display-side player could otherwise see early.
+  `.card-wrap.blurred .rebus-card-image` applies `blur(22px)
+  brightness(0.75)`, with a `.reveal-hint` overlay ("👆 Tap to reveal" on
+  Host, "🙈 Get ready…" on Display, non-interactive on the Display side
+  since it never sends actions). Resets to blurred on every new puzzle
+  dealt, same as hints/timer. 4 new unit tests (30/30 total).

@@ -523,6 +523,7 @@ h1, h2, h3 {
 
 /* ---------- Rebus card image ---------- */
 .card-wrap {
+  position: relative;
   display: flex;
   justify-content: center;
   margin: 0.5rem 0;
@@ -537,6 +538,42 @@ h1, h2, h3 {
   border: var(--border-w) solid var(--surface-border);
   border-radius: 16px;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+  transition: filter 0.25s ease;
+}
+
+/* Every puzzle deals in blurred — the Host taps the card to reveal it for
+   everyone at once. .card-wrap (not just the image) carries the class so
+   the reveal-hint overlay below can be positioned relative to it. */
+.card-wrap.blurred .rebus-card-image {
+  filter: blur(22px) brightness(0.75);
+}
+
+.host-card-wrap.blurred {
+  cursor: pointer;
+}
+
+.reveal-hint {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: center;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  pointer-events: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.card-wrap.blurred .reveal-hint {
+  display: flex;
+}
+
+.reveal-hint .reveal-hint-icon {
+  font-size: 2rem;
 }
 
 /* ==================================================================
@@ -619,6 +656,14 @@ h1, h2, h3 {
 
 .card-wrap-big .rebus-card-image {
   max-width: min(70vw, 620px);
+}
+
+.card-wrap-big .reveal-hint {
+  font-size: 1.4rem;
+}
+
+.card-wrap-big .reveal-hint .reveal-hint-icon {
+  font-size: 3.5rem;
 }
 
 /* ---------- Confetti (JS-appended, no library) ---------- */

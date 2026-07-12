@@ -11,7 +11,8 @@ other games in this workspace.
 - Each round the Display shows a rebus card — a classic wordplay puzzle
   where word position, size, repetition, or a number standing in for its
   sound spells out a word or phrase (e.g. "B4" = BEFORE, "I" over "STAND"
-  = UNDERSTAND).
+  = UNDERSTAND). It deals in blurred — the Host taps the card when ready
+  to reveal it to everyone at once.
 - No typing, no buzzers — teams shout their guess out loud. The Host taps
   **Team A got it** / **Team B got it** to award the point, or **Skip** if
   nobody can get it.
