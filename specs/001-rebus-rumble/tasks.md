@@ -127,6 +127,21 @@
 - [x] Re-verified: 13/13 tests, live Playwright playtest, every puzzle
       image confirmed present on disk.
 
+## Phase 11 — Fill gap against the original reference photo (post-launch addition)
+- [x] Audited all 12 cards from the original reference photo against
+      `js/puzzles.js`; found 3 never built and 1 built in simplified form
+      (see plan.md Changelog v1.5).
+- [x] Built TRAVEL OVERSEAS ("TRAVEL" over a line over "CCCCCCC" — matches
+      the reference photo layout exactly), 3D MOVIE ("D D D" + "MOVIE"),
+      TRY TO UNDERSTAND ("TRY TO" above the I/STAND fraction, as a new
+      puzzle alongside — not replacing — the plain UNDERSTAND card), and
+      ONCE UPON A TIME ("ONCE" + a regenerated clock icon).
+- [x] Regenerated `images/icons/clock.png` (deleted in v1.4 as unused,
+      needed again here) with a background-transparency fix applied after
+      generation, same as the knife icon in Phase 9.
+- [x] `js/puzzles.js` updated to 32 total puzzles (card-29 .. card-32);
+      re-ran the full test suite (13/13) and a live Playwright playtest.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would

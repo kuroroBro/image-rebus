@@ -200,4 +200,28 @@ export const PUZZLES = [
     image: 'images/cards/card-28.png',
     description: 'html: The word "ROADS" large and centered, with a large red "X" overlaid directly on top of it, centered — X reads as "cross", "ROADS" is the rest of the word, stated plainly instead of via an icon.',
   },
+  {
+    id: 'travel-overseas',
+    answer: 'TRAVEL OVERSEAS',
+    image: 'images/cards/card-29.png',
+    description: 'html: The word "TRAVEL" centered, a horizontal line directly underneath it, then 7 letter "C"s (spaced out) centered underneath that line (TRAVEL over C\'s — "seas"). Matches the original reference photo exactly.',
+  },
+  {
+    id: '3d-movie',
+    answer: '3D MOVIE',
+    image: 'images/cards/card-30.png',
+    description: 'html: The letter "D" three times in a row with gaps between them, then the word "MOVIE" centered underneath (three D\'s + movie = 3D movie).',
+  },
+  {
+    id: 'try-to-understand',
+    answer: 'TRY TO UNDERSTAND',
+    image: 'images/cards/card-31.png',
+    description: 'html: "TRY TO" centered near the top, then the same I-over-STAND fraction as the plain "understand" card below it. A fuller variant of that card matching the original reference photo\'s "Try" + stand/2 example; kept as a separate puzzle rather than replacing the simpler UNDERSTAND card.',
+  },
+  {
+    id: 'once-upon-a-time',
+    answer: 'ONCE UPON A TIME',
+    image: 'images/cards/card-32.png',
+    description: 'ai-icon: images/icons/clock.png (a round analog clock face, any time, no text — regenerated after the original clock.png was deleted once high-noon stopped using it) composited via html with the word "ONCE" centered above it.',
+  },
 ];

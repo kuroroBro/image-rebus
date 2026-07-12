@@ -210,3 +210,19 @@ rooms from different games never collide on the shared broker.
   `fish.png`, `knife.png`, `pouch.png` (the 3 icons actually referenced by
   a puzzle). Re-verified: 13/13 tests, live Playwright playtest, every
   puzzle image confirmed present.
+- **v1.5** (2026-07-12): Went back through the original 12-card reference
+  photo (the one that corrected this project's whole approach in v1 —
+  see Decision #1) and found 3 of its puzzles hadn't been built at all,
+  plus one built in simplified form. Added all 4 as new puzzles (32
+  total): TRAVEL OVERSEAS ("TRAVEL" over a line over 7 "C"s — spelled
+  "seas" — matches the reference photo's exact layout), 3D MOVIE (three
+  "D"s + "MOVIE"), TRY TO UNDERSTAND ("TRY TO" above the same I-over-STAND
+  fraction the plain UNDERSTAND card uses — kept as an additional puzzle
+  rather than replacing UNDERSTAND, since both are legitimate answers and
+  having both isn't confusing in a shuffled deck), and ONCE UPON A TIME
+  ("ONCE" + a clock icon — required regenerating `images/icons/clock.png`,
+  since v1.4 had deleted the original as unused before this need came up).
+  Two of the original photo's 12 cards remain deliberately unbuilt: the
+  blurry "M1Y L1I1F1E" (illegible even in the source photo) and the
+  "EYE / eye" / "POT" examples (no confident unambiguous reading found) —
+  same judgment call as v1, re-confirmed rather than revisited.
