@@ -3,6 +3,7 @@
 // spec.md Non-goals.
 
 const SETTINGS_KEY = 'rebus.settings.v1';
+const USED_PUZZLES_KEY = 'rebus.usedPuzzleIds.v1';
 
 export const DEFAULT_SETTINGS = {
   targetScore: 0, // 0/null = no target — play through the whole deck
@@ -40,4 +41,30 @@ export function loadSettings() {
 
 export function saveSettings(settings) {
   write(SETTINGS_KEY, settings);
+}
+
+export function loadUsedPuzzleIds() {
+  const saved = read(USED_PUZZLES_KEY, []);
+  if (!Array.isArray(saved)) return [];
+  return saved.filter((id) => typeof id === 'string');
+}
+
+export function saveUsedPuzzleIds(ids) {
+  write(USED_PUZZLES_KEY, [...new Set(ids)]);
+}
+
+export function markPuzzleUsed(id) {
+  if (!id) return;
+  const used = loadUsedPuzzleIds();
+  if (used.includes(id)) return;
+  saveUsedPuzzleIds([...used, id]);
+}
+
+export function resetUsedPuzzleIds() {
+  saveUsedPuzzleIds([]);
+}
+
+export function filterUnusedPuzzles(puzzlePool, usedIds = loadUsedPuzzleIds()) {
+  const used = new Set(usedIds);
+  return puzzlePool.filter((puzzle) => !used.has(puzzle.id));
 }

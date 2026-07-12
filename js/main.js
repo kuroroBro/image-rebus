@@ -3,7 +3,9 @@ import {
   revealLetter, revealImage, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
 } from './game.js';
 import { PUZZLES } from './puzzles.js';
-import { loadSettings, saveSettings } from './storage.js';
+import {
+  filterUnusedPuzzles, loadSettings, markPuzzleUsed, resetUsedPuzzleIds, saveSettings,
+} from './storage.js';
 import { hostRoom, joinRoom, normalizeCode } from './room.js';
 
 const $ = (id) => document.getElementById(id);
@@ -24,6 +26,8 @@ let room = null;        // { code, broadcast, close } (host) or { close } (displ
 let role = null;        // 'host' | 'display'
 let peerCount = 0;
 let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
+
+const RESET_USED_CARDS_MESSAGE = 'All rebus cards have been used. Reset card data so cards can be reused?';
 
 // ---------- shared render helper (letter-hint tiles) ----------
 // Takes the *masked* array ({char, isSpace}[]) from game.js's maskedAnswer,
@@ -97,6 +101,20 @@ function broadcastState() {
   if (room && role === 'host') {
     room.broadcast({ t: 'state', state: redactState(game), hostNow: Date.now() });
   }
+}
+
+function createGameFromUnusedCards() {
+  let puzzlePool = filterUnusedPuzzles(PUZZLES);
+  if (puzzlePool.length === 0) {
+    if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
+    resetUsedPuzzleIds();
+    puzzlePool = PUZZLES;
+  }
+  return createGame(settings, puzzlePool);
+}
+
+function markCurrentPuzzleUsed() {
+  if (role === 'host' && game?.puzzle?.id) markPuzzleUsed(game.puzzle.id);
 }
 
 // ---------- confetti (small, dependency-free) ----------
@@ -176,6 +194,7 @@ $('btn-join').addEventListener('click', () => {
 $('btn-setup-back').addEventListener('click', () => showScreen('screen-home'));
 
 $('btn-start-room').addEventListener('click', () => {
+  $('setup-error').hidden = true;
   settings = {
     targetScore: Number($('input-target-score').value),
     hintsEnabled: $('input-hints').checked,
@@ -186,11 +205,15 @@ $('btn-start-room').addEventListener('click', () => {
     },
   };
   saveSettings(settings);
-  game = createGame(settings, PUZZLES);
+  game = createGameFromUnusedCards();
+  if (!game) {
+    $('setup-error').hidden = false;
+    $('setup-error').textContent = 'No unused cards left. Reset card data to start a new game.';
+    return;
+  }
   role = 'host';
 
   $('btn-start-room').disabled = true;
-  $('setup-error').hidden = true;
   hostRoom({ onPeers: handlePeers, onError: handleHostRoomError })
     .then((result) => {
       $('btn-start-room').disabled = false;
@@ -237,6 +260,7 @@ $('btn-copy-code').addEventListener('click', () => {
 
 $('btn-start-game').addEventListener('click', () => {
   startGame(game);
+  markCurrentPuzzleUsed();
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();
@@ -266,6 +290,7 @@ function renderHostPanel() {
 }
 
 function afterHostAction() {
+  markCurrentPuzzleUsed();
   if (game.phase === PHASE.GAMEOVER) {
     renderGameOver();
     showScreen('screen-gameover');
@@ -333,8 +358,11 @@ function renderGameOver() {
 }
 
 $('btn-play-again').addEventListener('click', () => {
-  game = createGame(settings, PUZZLES);
+  const nextGame = createGameFromUnusedCards();
+  if (!nextGame) return;
+  game = nextGame;
   startGame(game);
+  markCurrentPuzzleUsed();
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();
