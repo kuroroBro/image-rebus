@@ -13,16 +13,23 @@
 // shouts anything. `id` stays descriptive since it's source code, never
 // sent over the wire — see plan.md Decision #3.
 //
-// Cards come from two sources, both recorded in `description`:
-//   - `ai:` prefix — generated via the image-gen skill; the text after the
-//     prefix is the exact prompt used.
+// Cards come from three sources, all recorded in `description`:
+//   - `ai:` prefix — the whole card generated via the image-gen skill
+//     (text and all); the text after the prefix is the exact prompt used.
+//     Every AI-generated card was manually checked against its intended
+//     text before being kept.
 //   - `html:` prefix — rendered locally from HTML/CSS via a headless
 //     browser screenshot (see the shared template these all use, kept in
 //     this project's history — a plain white 800x800 card, 6px black
 //     border, bold Arial/Helvetica, centered content). Used for every card
-//     that's pure text with no illustration, since that's cheaper and
-//     guarantees correct spelling — AI image generation is unreliable at
-//     exact text. The text after the prefix is the layout description.
+//     that's pure text/geometry with no illustration, since that's cheaper
+//     and guarantees correct spelling.
+//   - `ai-icon:` prefix — a hybrid: the illustrated object alone (no text)
+//     is AI-generated and saved to `images/icons/`, then composited with
+//     the exact answer text via the same HTML/CSS + screenshot pipeline as
+//     `html:` cards. This gets the reach of AI illustration (a clock, a
+//     fish, a zippered pouch) with zero text-spelling risk, since the text
+//     itself is never AI-generated. See plan.md Decision #8.
 
 export const PUZZLES = [
   {
@@ -156,5 +163,41 @@ export const PUZZLES = [
     answer: 'BIG DEAL',
     image: 'images/cards/card-22.png',
     description: 'html: Just the word "DEAL" in an enormous font size, filling almost the entire card edge to edge.',
+  },
+  {
+    id: 'stepfather',
+    answer: 'STEPFATHER',
+    image: 'images/cards/card-23.png',
+    description: 'html: The word "FATHER" centered near the top, with a black ascending-staircase silhouette (5 steps, CSS clip-path) below it.',
+  },
+  {
+    id: 'step-down',
+    answer: 'STEP DOWN',
+    image: 'images/cards/card-24.png',
+    description: 'html: The same staircase silhouette as stepfather, mirrored to descend left-to-right, with the word "DOWN" positioned in the lower-right corner near the bottom of the steps.',
+  },
+  {
+    id: 'high-noon',
+    answer: 'HIGH NOON',
+    image: 'images/cards/card-25.png',
+    description: 'ai-icon: images/icons/clock.png (a simple round analog clock face showing exactly 12 o\'clock) composited via html with the word "NOON" centered below it.',
+  },
+  {
+    id: 'fish-out-of-water',
+    answer: 'FISH OUT OF WATER',
+    image: 'images/cards/card-26.png',
+    description: 'ai-icon: images/icons/fish.png (a simple cartoon fish, side view) composited via html with the word "DISH" centered above it.',
+  },
+  {
+    id: 'zip-it',
+    answer: 'ZIP IT',
+    image: 'images/cards/card-27.png',
+    description: 'ai-icon: images/icons/pouch.png (a zippered pouch with a visible zipper) composited via html with the word "ZIP" centered below it.',
+  },
+  {
+    id: 'crossroads',
+    answer: 'CROSSROADS',
+    image: 'images/cards/card-28.png',
+    description: 'ai-icon: images/icons/road-fork.png (a road viewed from above splitting into two paths, a Y-fork) composited via html with the word "ROADS" centered below it.',
   },
 ];

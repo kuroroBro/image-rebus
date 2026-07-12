@@ -75,6 +75,28 @@
 - [x] Re-ran the full test suite (13/13) and a live 2-tab Playwright
       playtest against the expanded deck.
 
+## Phase 8 — User-directed puzzles + first illustrated icons (post-launch addition)
+- [x] Built SHUTDOWN ("SHUT"/"DOWN" stacked); removed immediately at the
+      user's request ("seem incorrect") — never added to `js/puzzles.js`.
+- [x] Added a reusable CSS clip-path staircase to the shared card template
+      (`.staircase-up`, `.staircase-down`) and built STEPFATHER (ascending
+      staircase under "FATHER") and STEP DOWN (descending staircase toward
+      a lower-right "DOWN") — the user's "the ladder from stepfather then
+      Down on lower right" instruction, read as two puzzles sharing one
+      graphic.
+- [x] Generated 5 object-only icons via the image-gen skill in a single
+      batch (no text in any prompt): `images/icons/{clock,fish,ribbon,
+      pouch,road-fork}.png`. All verified individually.
+- [x] Composited 4 of the 5 into full cards via HTML (`ai-icon:` source
+      type, plan.md Decision #8): HIGH NOON, FISH OUT OF WATER, ZIP IT,
+      CROSSROADS.
+- [x] Attempted AROUND THE WORLD with `ribbon.png`; dropped after two
+      layout attempts both failed to read unambiguously (overlapping the
+      text hid it entirely; stacking the bow above the word didn't clearly
+      encode "around"). Deleted the now-unused `ribbon.png`.
+- [x] `js/puzzles.js` updated to 28 total puzzles (card-23 .. card-28);
+      re-ran the full test suite (13/13) and a live Playwright playtest.
+
 ## Open backlog (intentionally deferred)
 
 - A second puzzle category/set, plus the category-selection UI that would

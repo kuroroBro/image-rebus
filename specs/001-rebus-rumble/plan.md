@@ -17,6 +17,10 @@ js/room.js                PeerJS room wrapper, adapted from icon-guess-the-word
 js/main.js                DOM wiring, redaction, render, networking glue
 vendor/peerjs.min.js     vendored PeerJS client (no CDN dependency at runtime)
 images/cards/*.png       puzzle card images, opaque filenames (see Decision #4)
+images/icons/*.png       AI-generated illustrations with no text, composited
+                          into cards by name (clock, fish, pouch, road-fork —
+                          see Decision #8); not opaque, since these never
+                          identify a specific answer on their own
 tests/game.test.mjs      node --test unit tests for js/game.js
 .github/workflows/deploy.yml   test job → GitHub Pages deploy job
 ```
@@ -100,6 +104,20 @@ rooms from different games never collide on the shared broker.
    twist (the handicap penalty) — with only 2 teams instead of 3-8, a
    single word-genius dominating isn't the same runaway-leader problem the
    handicap was designed to solve, so it would add a rule with no payoff.
+8. **Illustrated cards use a hybrid pipeline: AI generates the icon alone,
+   HTML composites the text.** Several strong puzzle ideas (HIGH NOON,
+   FISH OUT OF WATER, ZIP IT, CROSSROADS) need a real illustrated object —
+   no CSS trick draws a recognizable clock or fish. Rather than let the AI
+   generate the full card (Decision #2's original `ai:` path, which
+   reintroduces the exact-text risk that path was built to avoid for
+   typography-only cards), the AI generates *only* the object, with no
+   text anywhere in the prompt, saved to `images/icons/`. The exact answer
+   text is then placed by the same HTML/CSS + headless-screenshot pipeline
+   used for `html:` cards, composited with the icon via a plain `<img>`
+   tag. This keeps the "AI is unreliable at exact text" mitigation intact
+   while still getting real illustrations. Recorded as a third
+   `description` prefix, `ai-icon:`, naming which icon file it composites
+   and where the text sits relative to it.
 
 ## Changelog
 
@@ -127,3 +145,20 @@ rooms from different games never collide on the shared broker.
   actually decode to its claimed answer ("GIVE" x4 was dropped: unlike
   "GET IT" x4 → FOUR-GET-IT, there's no phonetic reading of four GIVEs
   that produces "up").
+- **v1.2** (2026-07-12): Added 6 more puzzles (28 total, up from v1.1's 22)
+  directly requested by the user. SHUTDOWN ("SHUT"/"DOWN" stacked) was
+  built first but removed immediately at the user's request as
+  "incorrect," before it was ever counted — the 6 that shipped are
+  STEPFATHER and STEP DOWN (both use a new CSS clip-path staircase
+  silhouette — `.staircase-up`/`.staircase-down` in the shared card
+  template — ascending under "FATHER" for one, descending toward a
+  lower-right "DOWN" for the other; STEP DOWN was this session's own
+  extension of the user's "ladder from stepfather" instruction, reusing
+  the same graphic with different text/position rather than a second
+  unrelated puzzle), and — introducing the `ai-icon:` hybrid (Decision
+  #8) — HIGH NOON, FISH OUT OF WATER, ZIP IT, and CROSSROADS. A fifth
+  `ai-icon:` candidate, AROUND THE WORLD (a ribbon/bow icon), was
+  generated but dropped: overlapping the bow with the word "WORLD"
+  obscured the text, and stacking them instead (bow above word) didn't
+  read as "around" clearly enough to keep. Also removed the unused
+  `images/icons/ribbon.png` since nothing references it.
