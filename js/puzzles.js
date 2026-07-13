@@ -839,7 +839,7 @@ export const PUZZLES = [
     id: 'sidewalk',
     answer: 'SIDEWALK',
     image: 'images/cards/card-116.png',
-    description: 'html: The word "WALK" rotated 90 degrees and positioned vertically against the left edge of the card (representing "WALK" written on the side = "SIDEWALK").',
+    description: 'html: A grey road with a dashed yellow center line fills the right side of the card; a white strip on the left is the sidewalk, with the word "WALK" rotated 90 degrees running vertically along it, right against the card\'s left edge (representing "WALK" written on the side, next to the road = "SIDEWALK").',
     category: 'wordplay',
   },
   {
