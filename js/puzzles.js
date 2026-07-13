@@ -690,4 +690,10 @@ export const PUZZLES = [
     image: 'images/cards/card-109.png',
     description: 'html: A dashed vertical line drops from the top of the card down to a ground line near the bottom. Three faint, increasingly dark and tilted ghost copies of the word "TEAR" trail up the line like a motion blur, ending with the solid black word landed tilted and sprawled across the ground line, like something tumbling from a high place and landing in a sleeping/collapsed pose (representing "TEARDROP").',
   },
+  {
+    id: 'godfather',
+    answer: 'GODFATHER',
+    image: 'images/cards/card-110.png',
+    description: 'ai-icon: images/icons/praying-hands.png (two simple flat praying hands pressed together, no text) positioned in the lower right, composited via html with the word "FATHER" positioned in the upper right (praying hands = "GOD", + "FATHER" = "GODFATHER").',
+  },
 ];
