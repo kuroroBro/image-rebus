@@ -163,7 +163,7 @@ export const PUZZLES = [
     id: 'once-in-a-blue-moon',
     answer: 'ONCE IN A BLUE MOON',
     image: 'images/cards/card-84.png',
-    description: 'html: The letters spelling "MOONCEON" where the letters M, O, O, N at the edges are colored blue and C, E in the middle are colored black (representing the word "ONCE" inside a blue "MOON" = "ONCE IN A BLUE MOON").',
+    description: 'html: The word "ONCE" in black, stacked above the word "MOON" colored blue (ONCE + a BLUE MOON = "ONCE IN A BLUE MOON").',
     category: 'phrase',
   },
   {
