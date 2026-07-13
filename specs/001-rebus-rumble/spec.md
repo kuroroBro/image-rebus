@@ -38,8 +38,9 @@ the game fits how long my group wants to play.
   3/5/7/10) at setup time. When set, the first team to reach that score wins
   immediately. When off (the default), the deck runs out and the higher
   score wins (a tie is a draw).
-- No category selection in this version — one built-in puzzle set, used in
-  full every game (see Non-goals).
+- The Host can optionally restrict the deck to one card category (Classic
+  Wordplay, Phrases & Idioms, or Picture Clues) instead of the full mixed
+  set — see plan.md Decision #11.
 
 ### US-2: Play a round (host-judged, no typing, no timer)
 As a host running the game, I want to flip a rebus card and award the point
@@ -115,9 +116,9 @@ show the same live game, so I don't need anyone else's phone.
 - No per-player devices, no card hands, no turn-taking between teams
   (the "Combo Builder" framework's shape) — both teams see the same puzzle
   at the same time and race to shout first.
-- No category selection or custom categories in this version — a single
-  built-in puzzle set is used in full every game. Multiple categories are a
-  plausible future content expansion (more puzzle sets), not part of v1.
+- No *custom* categories — the Host can filter the built-in deck down to
+  one of three fixed categories (Decision #11), but can't define new ones
+  or upload a separate puzzle set.
 - No accounts, matchmaking, or cross-room/cross-game history.
 - No emoji-based puzzles — every puzzle clue is an image (see plan.md
   Decisions), not text/emoji, per the explicit "use image instead" request

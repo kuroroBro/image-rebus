@@ -25,8 +25,8 @@ function shuffle(arr, rng = Math.random) {
   return a;
 }
 
-// One built-in puzzle set in this version (no category selection — see
-// plan.md Decision #4), so the deck is just every puzzle, shuffled.
+// The deck is just the given pool, shuffled — category and used-card
+// filtering both happen upstream, in js/main.js, before this is called.
 function buildDeck(puzzlePool, rng) {
   return shuffle(puzzlePool, rng);
 }

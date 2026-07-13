@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import {
-  filterUnusedPuzzles, loadUsedPuzzleIds, markPuzzleUsed, resetUsedPuzzleIds, saveUsedPuzzleIds,
+  filterByCategory, filterUnusedPuzzles, loadUsedPuzzleIds, markPuzzleUsed, resetUsedPuzzleIds,
+  saveUsedPuzzleIds,
 } from '../js/storage.js';
 
 const store = new Map();
@@ -19,6 +20,12 @@ const POOL = [
   { id: 'p1', answer: 'ONE' },
   { id: 'p2', answer: 'TWO' },
   { id: 'p3', answer: 'THREE' },
+];
+
+const CATEGORY_POOL = [
+  { id: 'p1', category: 'wordplay' },
+  { id: 'p2', category: 'phrase' },
+  { id: 'p3', category: 'picture' },
 ];
 
 test.beforeEach(() => {
@@ -45,4 +52,16 @@ test('resetUsedPuzzleIds makes all cards eligible again', () => {
 
   resetUsedPuzzleIds();
   assert.deepStrictEqual(filterUnusedPuzzles(POOL).map((puzzle) => puzzle.id), ['p1', 'p2', 'p3']);
+});
+
+test('filterByCategory keeps only puzzles matching the given category', () => {
+  assert.deepStrictEqual(
+    filterByCategory(CATEGORY_POOL, 'phrase').map((puzzle) => puzzle.id),
+    ['p2'],
+  );
+});
+
+test('filterByCategory returns the whole pool for "all" or no category', () => {
+  assert.deepStrictEqual(filterByCategory(CATEGORY_POOL, 'all'), CATEGORY_POOL);
+  assert.deepStrictEqual(filterByCategory(CATEGORY_POOL, undefined), CATEGORY_POOL);
 });

@@ -4,7 +4,8 @@ import {
 } from './game.js';
 import { PUZZLES } from './puzzles.js';
 import {
-  filterUnusedPuzzles, loadSettings, markPuzzleUsed, resetUsedPuzzleIds, saveSettings,
+  filterByCategory, filterUnusedPuzzles, loadSettings, markPuzzleUsed, resetUsedPuzzleIds,
+  saveSettings,
 } from './storage.js';
 import { hostRoom, joinRoom, normalizeCode } from './room.js';
 
@@ -104,11 +105,12 @@ function broadcastState() {
 }
 
 function createGameFromUnusedCards() {
-  let puzzlePool = filterUnusedPuzzles(PUZZLES);
+  const categoryPool = filterByCategory(PUZZLES, settings.category);
+  let puzzlePool = filterUnusedPuzzles(categoryPool);
   if (puzzlePool.length === 0) {
     if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
     resetUsedPuzzleIds();
-    puzzlePool = PUZZLES;
+    puzzlePool = categoryPool;
   }
   return createGame(settings, puzzlePool);
 }
@@ -159,6 +161,7 @@ $('btn-host').addEventListener('click', () => {
   $('input-target-score').value = String(settings.targetScore || 0);
   $('input-hints').checked = settings.hintsEnabled;
   $('input-timer').value = String(settings.timerSeconds || 0);
+  $('input-category').value = settings.category || 'all';
   $('setup-error').hidden = true;
   showScreen('screen-setup');
 });
@@ -199,6 +202,7 @@ $('btn-start-room').addEventListener('click', () => {
     targetScore: Number($('input-target-score').value),
     hintsEnabled: $('input-hints').checked,
     timerSeconds: Number($('input-timer').value),
+    category: $('input-category').value,
     teamNames: {
       a: $('input-team-a').value.trim() || 'Team A',
       b: $('input-team-b').value.trim() || 'Team B',

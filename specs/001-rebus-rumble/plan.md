@@ -169,6 +169,26 @@ rooms from different games never collide on the shared broker.
       starts with `revealedIndexes: []` and `timerStatus: 'paused'` — no
       code path can leak a hint or a running clock into the next round.
 
+11. **Category selection, added post-launch, reverses Decision #5 once the
+    deck had grown past 100 cards.** v1 explicitly deferred this (a picker
+    wasn't worth it for 14-28 cards); by the time the built-in set reached
+    111, mixing every card together stopped being the only reasonable
+    default. Rather than add custom/uploadable categories (still out of
+    scope — see spec.md Non-goals), every puzzle in `puzzles.js` got a
+    single `category` field, assigned by a deterministic rule rather than
+    per-card judgment calls: `'picture'` for any `ai-icon:` card (built
+    around a composited illustration), `'phrase'` for a remaining
+    multi-word answer, `'wordplay'` for a remaining single-word/compound
+    answer. This produced a roughly even three-way split (35/47/29) for
+    free, and means a new card's category never needs deciding by hand —
+    it falls out of choices already being made (icon or not, one word or
+    several). Filtering is a new pure function, `filterByCategory` in
+    `js/storage.js`, applied in `js/main.js` *before* `filterUnusedPuzzles`
+    — so "used" tracking and category filtering compose independently, and
+    `game.js` itself needs no changes (it already just shuffles whatever
+    pool it's handed). `settings.category` (default `'all'`) persists the
+    Host's last choice the same way target score or timer length do.
+
 ## Changelog
 
 - **v1** (2026-07-12): Initial build — 14 classic typographic rebus
