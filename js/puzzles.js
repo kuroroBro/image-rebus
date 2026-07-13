@@ -835,4 +835,25 @@ export const PUZZLES = [
     description: 'ai-icon: images/icons/shower-head.png (a simple flat wall-mounted shower head, no text) composited via html: the word "MEAT", the 🫵 (pointing-at-you) emoji, and the letter "R" in a row, with the shower head below (MEAT sounds like "meet", 🫵 + "R" reads as "your", + shower head = "meet your shower" ≈ "METEOR SHOWER").',
     category: 'picture',
   },
+  {
+    id: 'sidewalk',
+    answer: 'SIDEWALK',
+    image: 'images/cards/card-116.png',
+    description: 'html: The word "WALK" rotated 90 degrees and positioned vertically against the left edge of the card (representing "WALK" written on the side = "SIDEWALK").',
+    category: 'wordplay',
+  },
+  {
+    id: 'bicycle',
+    answer: 'BICYCLE',
+    image: 'images/cards/card-117.png',
+    description: 'html: The word "bi" (cycling through "Bi"/"bi"/"BI" casing) repeated 12 times evenly around a full circle, each instance rotated to follow the circle like numbers on a clock face (repeated "BI" arranged in a circle/cycle = "BICYCLE").',
+    category: 'wordplay',
+  },
+  {
+    id: 'tendon',
+    answer: 'TENDON',
+    image: 'images/cards/card-118.png',
+    description: 'html: The word "DON" written 10 times, scattered at random positions and angles across the card (count the DONs: TEN "DON"s = "TENDON").',
+    category: 'wordplay',
+  },
 ];
