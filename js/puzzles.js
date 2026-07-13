@@ -905,4 +905,18 @@ export const PUZZLES = [
     description: 'html: The word "ISSUES" written 10 times, scattered at random positions and angles across the card (count them: TEN "ISSUES", which said quickly sounds like "TENNIS SHOES").',
     category: 'phrase',
   },
+  {
+    id: 'midnight',
+    answer: 'MIDNIGHT',
+    image: 'images/cards/card-127.png',
+    description: 'html: The word "NIGHT" large and centered, with a downward-pointing arrow directly above the letter "G" — the exact middle letter of "NIGHT" (arrow marking the MIDdle = "MIDNIGHT").',
+    category: 'wordplay',
+  },
+  {
+    id: 'tuna-fish',
+    answer: 'TUNA FISH',
+    image: 'images/cards/card-128.png',
+    description: 'html: The phrase "NA FISH" written twice, stacked on two lines (two "NA FISH"es = "TU-NA FISH TU-NA FISH", TU sounding like "two" = "TUNA FISH").',
+    category: 'phrase',
+  },
 ];
