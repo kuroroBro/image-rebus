@@ -685,7 +685,7 @@ export const PUZZLES = [
     id: 'fooling-around',
     answer: 'FOOLING AROUND',
     image: 'images/cards/card-94.png',
-    description: 'html: The word "FOOLING" written inside a circular looping arrow (representing "FOOLING AROUND").',
+    description: 'html: The word "FOOLING" repeated 9 times evenly around a full circle, each instance rotated to follow the ring (repeated "FOOLING" going around in a circle = "FOOLING AROUND").',
     category: 'phrase',
   },
   {
