@@ -87,15 +87,10 @@
       </div>
 
       <div class="panel">
-        <h3>Card Category</h3>
-        <select id="input-category" class="select-input">
-          <option value="all">All Cards</option>
-          <option value="wordplay">Classic Wordplay</option>
-          <option value="phrase">Phrases &amp; Idioms</option>
-          <option value="picture">Picture Clues</option>
-        </select>
-        <p class="muted timer-hint">Which built-in cards to deal from. "All Cards" mixes
-          every style together.</p>
+        <h3>Card Categories</h3>
+        <div id="input-categories" class="category-checks"></div>
+        <p class="muted timer-hint">Pick any number of categories to deal from. Leave
+          all unchecked to include every card.</p>
       </div>
 
       <div class="panel">
@@ -173,9 +168,10 @@
       <button id="btn-start-timer" class="btn btn-secondary btn-small">▶️ Start Timer</button>
     </div>
 
-    <div class="host-answer-card">
+    <div id="host-answer-card" class="host-answer-card">
       <p class="word-label">Answer</p>
       <p id="host-answer" class="host-answer"></p>
+      <div class="reveal-hint"><span class="reveal-hint-icon">👆</span>Tap to reveal</div>
     </div>
 
     <div id="host-card-wrap" class="card-wrap host-card-wrap">

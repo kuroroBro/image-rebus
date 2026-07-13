@@ -327,6 +327,12 @@ h1, h2, h3 {
   cursor: pointer;
 }
 
+.category-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 /* ---------- Timer ---------- */
 .timer-wrap {
   display: flex;
@@ -468,12 +474,27 @@ h1, h2, h3 {
 }
 
 .host-answer-card {
+  position: relative;
   background: var(--surface);
   border: var(--border-w) solid var(--accent);
   border-radius: var(--radius);
   padding: 1rem;
   text-align: center;
   margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.host-answer-card.blurred {
+  cursor: pointer;
+}
+
+.host-answer-card.blurred .host-answer {
+  filter: blur(8px);
+  user-select: none;
+}
+
+.host-answer-card.blurred .reveal-hint {
+  display: flex;
 }
 
 .word-label {

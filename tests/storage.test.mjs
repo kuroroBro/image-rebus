@@ -54,14 +54,21 @@ test('resetUsedPuzzleIds makes all cards eligible again', () => {
   assert.deepStrictEqual(filterUnusedPuzzles(POOL).map((puzzle) => puzzle.id), ['p1', 'p2', 'p3']);
 });
 
-test('filterByCategory keeps only puzzles matching the given category', () => {
+test('filterByCategory keeps only puzzles matching one of the given categories', () => {
   assert.deepStrictEqual(
-    filterByCategory(CATEGORY_POOL, 'phrase').map((puzzle) => puzzle.id),
+    filterByCategory(CATEGORY_POOL, ['phrase']).map((puzzle) => puzzle.id),
     ['p2'],
   );
 });
 
-test('filterByCategory returns the whole pool for "all" or no category', () => {
-  assert.deepStrictEqual(filterByCategory(CATEGORY_POOL, 'all'), CATEGORY_POOL);
+test('filterByCategory unions multiple selected categories', () => {
+  assert.deepStrictEqual(
+    filterByCategory(CATEGORY_POOL, ['wordplay', 'picture']).map((puzzle) => puzzle.id),
+    ['p1', 'p3'],
+  );
+});
+
+test('filterByCategory returns the whole pool for an empty or missing list', () => {
+  assert.deepStrictEqual(filterByCategory(CATEGORY_POOL, []), CATEGORY_POOL);
   assert.deepStrictEqual(filterByCategory(CATEGORY_POOL, undefined), CATEGORY_POOL);
 });

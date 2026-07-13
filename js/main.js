@@ -2,7 +2,7 @@ import {
   PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
   revealLetter, revealImage, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
 } from './game.js';
-import { PUZZLES } from './puzzles.js';
+import { CATEGORIES, PUZZLES } from './puzzles.js';
 import {
   filterByCategory, filterUnusedPuzzles, loadSettings, markPuzzleUsed, resetUsedPuzzleIds,
   saveSettings,
@@ -27,6 +27,10 @@ let room = null;        // { code, broadcast, close } (host) or { close } (displ
 let role = null;        // 'host' | 'display'
 let peerCount = 0;
 let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
+// Host only, never sent over the network (the Display never gets the raw
+// answer regardless — see redactState). Resets to false every time a new
+// puzzle is dealt, so the Host has to tap to see the answer each round.
+let hostAnswerRevealed = false;
 
 const RESET_USED_CARDS_MESSAGE = 'All rebus cards have been used. Reset card data so cards can be reused?';
 
@@ -105,7 +109,7 @@ function broadcastState() {
 }
 
 function createGameFromUnusedCards() {
-  const categoryPool = filterByCategory(PUZZLES, settings.category);
+  const categoryPool = filterByCategory(PUZZLES, settings.categories);
   let puzzlePool = filterUnusedPuzzles(categoryPool);
   if (puzzlePool.length === 0) {
     if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
@@ -155,13 +159,38 @@ $('btn-close-how-to-play').addEventListener('click', () => {
   $('dialog-how-to-play').close();
 });
 
+// One checkbox per CATEGORIES entry, checked to match `selected`. Rebuilt
+// fresh each time Setup opens rather than kept in sync incrementally —
+// there are only 4 of these, and it keeps the source of truth (CATEGORIES)
+// and the DOM from ever drifting apart.
+function renderCategoryChecks(selected) {
+  const container = $('input-categories');
+  container.innerHTML = '';
+  for (const { id, label } of CATEGORIES) {
+    const row = document.createElement('label');
+    row.className = 'checkbox-row';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.value = id;
+    input.checked = selected.includes(id);
+    const span = document.createElement('span');
+    span.textContent = label;
+    row.append(input, span);
+    container.appendChild(row);
+  }
+}
+
+function readCheckedCategories() {
+  return Array.from($('input-categories').querySelectorAll('input:checked')).map((el) => el.value);
+}
+
 $('btn-host').addEventListener('click', () => {
   $('input-team-a').value = settings.teamNames.a;
   $('input-team-b').value = settings.teamNames.b;
   $('input-target-score').value = String(settings.targetScore || 0);
   $('input-hints').checked = settings.hintsEnabled;
   $('input-timer').value = String(settings.timerSeconds || 0);
-  $('input-category').value = settings.category || 'all';
+  renderCategoryChecks(settings.categories || []);
   $('setup-error').hidden = true;
   showScreen('screen-setup');
 });
@@ -202,7 +231,7 @@ $('btn-start-room').addEventListener('click', () => {
     targetScore: Number($('input-target-score').value),
     hintsEnabled: $('input-hints').checked,
     timerSeconds: Number($('input-timer').value),
-    category: $('input-category').value,
+    categories: readCheckedCategories(),
     teamNames: {
       a: $('input-team-a').value.trim() || 'Team A',
       b: $('input-team-b').value.trim() || 'Team B',
@@ -265,6 +294,7 @@ $('btn-copy-code').addEventListener('click', () => {
 $('btn-start-game').addEventListener('click', () => {
   startGame(game);
   markCurrentPuzzleUsed();
+  hostAnswerRevealed = false;
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();
@@ -282,6 +312,7 @@ function renderHostPanel() {
   $('host-score-a').textContent = game.teams.a.score;
   $('host-score-b').textContent = game.teams.b.score;
   $('host-answer').textContent = puzzle ? puzzle.answer : '';
+  $('host-answer-card').classList.toggle('blurred', !!puzzle && !hostAnswerRevealed);
   $('host-card-image').src = puzzle ? puzzle.image : '';
   $('host-card-wrap').classList.toggle('blurred', !!puzzle && !puzzle.imageRevealed);
   renderTiles($('host-tiles'), maskedAnswer(puzzle));
@@ -295,6 +326,7 @@ function renderHostPanel() {
 
 function afterHostAction() {
   markCurrentPuzzleUsed();
+  hostAnswerRevealed = false;
   if (game.phase === PHASE.GAMEOVER) {
     renderGameOver();
     showScreen('screen-gameover');
@@ -314,6 +346,14 @@ $('host-card-wrap').addEventListener('click', () => {
     renderHostPanel();
     broadcastState();
   }
+});
+
+// Host-only reveal, no network involved — the Display never receives the
+// raw answer regardless of this toggle (see redactState).
+$('host-answer-card').addEventListener('click', () => {
+  if (!game.puzzle || hostAnswerRevealed) return;
+  hostAnswerRevealed = true;
+  renderHostPanel();
 });
 
 $('btn-start-timer').addEventListener('click', () => {
@@ -367,6 +407,7 @@ $('btn-play-again').addEventListener('click', () => {
   game = nextGame;
   startGame(game);
   markCurrentPuzzleUsed();
+  hostAnswerRevealed = false;
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();

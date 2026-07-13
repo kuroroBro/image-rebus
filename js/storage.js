@@ -8,7 +8,7 @@ export const DEFAULT_SETTINGS = {
   targetScore: 0, // 0/null = no target — play through the whole deck
   hintsEnabled: false,
   timerSeconds: 0, // 0/null = no timer
-  category: 'all', // 'all' or one of puzzles.js's CATEGORIES ids
+  categories: [], // empty = every category (see puzzles.js's CATEGORIES ids)
   teamNames: { a: 'Team A', b: 'Team B' },
 };
 
@@ -69,7 +69,10 @@ export function filterUnusedPuzzles(puzzlePool, usedIds = loadUsedPuzzleIds()) {
   return puzzlePool.filter((puzzle) => !used.has(puzzle.id));
 }
 
-export function filterByCategory(puzzlePool, category) {
-  if (!category || category === 'all') return puzzlePool;
-  return puzzlePool.filter((puzzle) => puzzle.category === category);
+// `categories` is a list of CATEGORIES ids to keep. Empty/missing means no
+// restriction — every category passes, same as picking none in the UI.
+export function filterByCategory(puzzlePool, categories) {
+  if (!categories || categories.length === 0) return puzzlePool;
+  const wanted = new Set(categories);
+  return puzzlePool.filter((puzzle) => wanted.has(puzzle.category));
 }

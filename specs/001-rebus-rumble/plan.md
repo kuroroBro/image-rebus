@@ -176,18 +176,41 @@ rooms from different games never collide on the shared broker.
     default. Rather than add custom/uploadable categories (still out of
     scope — see spec.md Non-goals), every puzzle in `puzzles.js` got a
     single `category` field, assigned by a deterministic rule rather than
-    per-card judgment calls: `'picture'` for any `ai-icon:` card (built
-    around a composited illustration), `'phrase'` for a remaining
+    per-card judgment calls, checked in this order: `'tagalog'` for a
+    Tagalog-language answer, `'picture'` for any remaining `ai-icon:` card
+    (built around a composited illustration), `'phrase'` for a remaining
     multi-word answer, `'wordplay'` for a remaining single-word/compound
-    answer. This produced a roughly even three-way split (35/47/29) for
-    free, and means a new card's category never needs deciding by hand —
-    it falls out of choices already being made (icon or not, one word or
-    several). Filtering is a new pure function, `filterByCategory` in
-    `js/storage.js`, applied in `js/main.js` *before* `filterUnusedPuzzles`
-    — so "used" tracking and category filtering compose independently, and
-    `game.js` itself needs no changes (it already just shuffles whatever
-    pool it's handed). `settings.category` (default `'all'`) persists the
-    Host's last choice the same way target score or timer length do.
+    answer. `'tagalog'` is checked first specifically because the two
+    Tagalog cards (HATING KAPATID, HABA NG BUHOK) are also multi-word and
+    would otherwise fall into `'phrase'` — a language distinction should
+    win over an English-only word-count heuristic. This produced a 35/45/
+    29/2 split, and means a new card's category never needs deciding by
+    hand — it falls out of choices already being made (icon or not, one
+    word or several, Tagalog or English). Filtering is a new pure
+    function, `filterByCategory` in `js/storage.js`, applied in
+    `js/main.js` *before* `filterUnusedPuzzles` — so "used" tracking and
+    category filtering compose independently, and `game.js` itself needs
+    no changes (it already just shuffles whatever pool it's handed). The
+    Setup screen renders one checkbox per `CATEGORIES` entry (multi-select,
+    not a single dropdown — the Host asked to be able to combine
+    categories, e.g. Tagalog + Picture Clues together), and
+    `settings.categories` (an id array, default `[]` meaning "every
+    category") persists the Host's last choice the same way target score
+    or timer length do.
+
+12. **Host-only answer blur, added post-launch alongside category
+    selection.** The card image was already dealt blurred with a tap-to-
+    reveal (Decision from v1's `revealImage`), but the "Answer" text panel
+    above it was always shown in the clear. The Host asked for the same
+    treatment there. This is deliberately *not* wired through `game.js` or
+    the network the way `imageRevealed` is — the Display never receives
+    the raw answer regardless (see `redactState` in `js/main.js`), so
+    there's no shared state to keep in sync, just a per-round local UI
+    flag (`hostAnswerRevealed` in `js/main.js`) that resets to `false`
+    every time a fresh puzzle is dealt (start game, award, skip, timer
+    expiry, play again) and flips to `true` on tap. Reuses the exact same
+    `.reveal-hint` overlay markup/CSS the card image uses, just scoped to
+    `#host-answer-card` instead of `#host-card-wrap`.
 
 ## Changelog
 

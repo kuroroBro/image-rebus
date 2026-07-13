@@ -31,16 +31,19 @@
 //     fish, a zippered pouch) with zero text-spelling risk, since the text
 //     itself is never AI-generated. See plan.md Decision #8.
 //
-// `category` groups puzzles for the setup-screen category picker. It's
-// derived from how the card reads, not how it was drawn: 'picture' for any
-// card built around an ai-icon illustration, 'phrase' for a multi-word
-// answer rendered in pure type, 'wordplay' for a single-word/compound
-// answer rendered in pure type. Every puzzle has exactly one.
+// `category` groups puzzles for the setup-screen category picker (the Host
+// can select any number of these — see js/storage.js's filterByCategory).
+// It's derived from how the card reads, not how it was drawn: 'picture'
+// for any card built around an ai-icon illustration, 'tagalog' for a
+// Tagalog-language answer (checked first, since a Tagalog answer can also
+// happen to be multi-word or icon-based), 'phrase' for a remaining
+// multi-word English answer, 'wordplay' for a remaining single-word
+// English answer. Every puzzle has exactly one.
 export const CATEGORIES = [
-  { id: 'all', label: 'All Cards' },
   { id: 'wordplay', label: 'Classic Wordplay' },
   { id: 'phrase', label: 'Phrases & Idioms' },
   { id: 'picture', label: 'Picture Clues' },
+  { id: 'tagalog', label: 'Tagalog Wordplay' },
 ];
 
 export const PUZZLES = [
@@ -466,14 +469,14 @@ export const PUZZLES = [
     answer: 'HATING KAPATID',
     image: 'images/cards/card-60.png',
     description: 'html: The text "KAP / ID" centered (representing the Tagalog wordplay "Hating Kap and ID" = "Hating Kapatid").',
-    category: 'phrase',
+    category: 'tagalog',
   },
   {
     id: 'haba-ng-buhok',
     answer: 'HABA NG BUHOK',
     image: 'images/cards/card-61.png',
     description: 'html: The letters in the word "BUHOK" repeated 3 times each, spelling "BBBUUUHHHOOOKKK" (representing "Haba ng buhok").',
-    category: 'phrase',
+    category: 'tagalog',
   },
   {
     id: 'advice',
