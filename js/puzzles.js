@@ -863,4 +863,11 @@ export const PUZZLES = [
     description: 'html: The word "KNEES" written 10 times, scattered at random positions and angles across the card (count them: TEN "KNEES", which sounds like "TEN-NIS" = "TENNIS").',
     category: 'wordplay',
   },
+  {
+    id: 'pangulo',
+    answer: 'PANGULO',
+    image: 'images/cards/card-121.png',
+    description: 'html: A full body figure (torso, arms, legs) with a large letter "P" standing in for the head instead of a circle (Tagalog wordplay for "PANGULO", the Filipino word for president).',
+    category: 'tagalog',
+  },
 ];
