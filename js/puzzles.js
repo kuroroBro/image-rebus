@@ -688,6 +688,6 @@ export const PUZZLES = [
     id: 'teardrop',
     answer: 'TEARDROP',
     image: 'images/cards/card-109.png',
-    description: 'html: A dashed vertical line drops from the top of the card down to a ground line near the bottom, where the word "TEAR" lands tilted and sprawled across the ground line, like something dropped from a high place and landed in a sleeping/collapsed pose (representing "TEARDROP").',
+    description: 'html: A dashed vertical line drops from the top of the card down to a ground line near the bottom. Three faint, increasingly dark and tilted ghost copies of the word "TEAR" trail up the line like a motion blur, ending with the solid black word landed tilted and sprawled across the ground line, like something tumbling from a high place and landing in a sleeping/collapsed pose (representing "TEARDROP").',
   },
 ];
