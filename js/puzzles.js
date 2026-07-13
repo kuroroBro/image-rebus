@@ -642,4 +642,46 @@ export const PUZZLES = [
     image: 'images/cards/card-101.png',
     description: 'html: The word "LEG" split along a diagonal line into two halves, offset apart from each other (representing "BREAK A LEG").',
   },
+  {
+    id: 'crocodile-tears',
+    answer: 'CROCODILE TEARS',
+    image: 'images/cards/card-102.png',
+    description: 'html: The word "CROCODILE" with both letter "O"s replaced by black teardrop shapes (representing "CROCODILE TEARS").',
+  },
+  {
+    id: 'meaning',
+    answer: 'MEANING',
+    image: 'images/cards/card-103.png',
+    description: 'html: The word "NING" large and centered, with the word "ME" in a small boxed outline positioned directly above the "N" (representing "ME" in "NING" = "MEANING").',
+  },
+  {
+    id: 'subtract',
+    answer: 'SUBTRACT',
+    image: 'images/cards/card-104.png',
+    description: 'html: The word "TRACK" written twice on one line with a large minus sign between them (representing "TRACK" minus "TRACK" = "SUBTRACT", TRACK sounding like TRACT).',
+  },
+  {
+    id: 'bigger',
+    answer: 'BIGGER',
+    image: 'images/cards/card-105.png',
+    description: 'html: The word "BIG" written three times stacked vertically in increasing size top to bottom, with the middle (second) "BIG" circled (representing "BIGGER").',
+  },
+  {
+    id: 'i-owe-you-one',
+    answer: 'I OWE YOU ONE',
+    image: 'images/cards/card-106.png',
+    description: 'ai-icon: images/icons/trophy.png (a simple flat gold trophy cup, no text) composited via html: the letters "I" and "U" centered inside a large circle outline (circle = "O", so "I" + circle + "U" = "IOU"), with the trophy positioned below (a trophy implies "number ONE") — representing "I OWE YOU ONE".',
+  },
+  {
+    id: 'display',
+    answer: 'DISPLAY',
+    image: 'images/cards/card-107.png',
+    description: 'ai-icon: images/icons/kids-playing.png (two simple flat cartoon kids holding hands, mid-jump, no text) composited via html with the word "DIS" centered above it (DIS + kids PLAYing = "DISPLAY").',
+  },
+  {
+    id: 'lamb-chop',
+    answer: 'LAMB CHOP',
+    image: 'images/cards/card-108.png',
+    description: 'ai-icon: images/icons/cleaver.png (a simple flat meat cleaver, blade angled, no text) composited via html: the word "LAMB" split apart into "LA" and "MB" with the cleaver overlaid diagonally in the gap between them (representing "LAMB" being CHOPped = "LAMB CHOP").',
+  },
 ];
