@@ -325,17 +325,10 @@ export const PUZZLES = [
     category: 'phrase',
   },
   {
-    id: 'touchdown',
-    answer: 'TOUCHDOWN',
-    image: 'images/cards/card-40.png',
-    description: 'crop: "TOUCH" large, "DOWN" small underneath — from the owner-supplied reference sheet (IMG_2920).',
-    category: 'wordplay',
-  },
-  {
     id: 'six-feet-under-ground',
     answer: 'SIX FEET UNDER GROUND',
     image: 'images/cards/card-41.png',
-    description: 'crop: "GROUND" above two lines of "FEEEET" (each stretched to exactly 6 letters = "SIX" letters) — from the owner-supplied reference sheet (IMG_2920).',
+    description: 'html: The word "GROUND" above a horizontal rule, with the word "FEET" repeated 6 times in a 3x2 grid below the rule (representing SIX "FEET" positioned under "GROUND" = "SIX FEET UNDER GROUND").',
     category: 'phrase',
   },
   {
@@ -372,13 +365,6 @@ export const PUZZLES = [
     image: 'images/cards/card-46.png',
     description: 'ai-icon: images/icons/ok-hand.png (a black hand making the OK gesture) composited via html with the letter "R" on the left and the letter "U" in the middle (R + U + OK hand = "R U OK" = "Are you OK").',
     category: 'picture',
-  },
-  {
-    id: 'mind-your-own-business',
-    answer: 'MIND YOUR OWN BUSINESS',
-    image: 'images/cards/card-47.png',
-    description: 'html: A stylized black brain silhouette (representing "MIND") on the left, next to the word "BUSINESS" on the right with a large red X overlaid on the letter "I" (representing "MIND YOUR [I/eye/own] BUSINESS").',
-    category: 'phrase',
   },
   {
     id: 'ballpark-figure',
@@ -442,13 +428,6 @@ export const PUZZLES = [
     image: 'images/cards/card-56.png',
     description: 'html: The letter "A", the number "100" (representing a century), and the word "OLD", stacked vertically and centered.',
     category: 'phrase',
-  },
-  {
-    id: 'hand-over-fist',
-    answer: 'HAND OVER FIST',
-    image: 'images/cards/card-57.png',
-    description: 'ai-icon: images/icons/hand.png and images/icons/fist.png, with the hand icon vertically above the fist icon (representing "HAND OVER FIST").',
-    category: 'picture',
   },
   {
     id: 'scaredy-cat',
@@ -566,7 +545,7 @@ export const PUZZLES = [
     id: 'fortunate',
     answer: 'FORTUNATE',
     image: 'images/cards/card-74.png',
-    description: 'ai-icon: images/icons/fish.png (a simple black fish/tuna shape) positioned between the numbers "4" and "8" (representing "4-tuna-8" = "FORTUNATE").',
+    description: 'ai-icon: images/icons/tuna.png (a simple flat tuna fish, side profile with fins and a forked tail, no text) positioned between the numbers "4" and "8" (representing "4-tuna-8" = "FORTUNATE").',
     category: 'picture',
   },
   {
@@ -633,7 +612,7 @@ export const PUZZLES = [
     category: 'wordplay',
   },
   {
-    id: 'once-in-a-blue-moon',
+    id: 'once-in-a-blue-moon-2',
     answer: 'ONCE IN A BLUE MOON',
     image: 'images/cards/card-84.png',
     description: 'html: The letters spelling "MOONCEON" where the letters M, O, O, N at the edges are colored blue and C, E in the middle are colored black (representing the word "ONCE" inside a blue "MOON" = "ONCE IN A BLUE MOON").',
@@ -657,8 +636,8 @@ export const PUZZLES = [
     id: 'eye-shadow',
     answer: 'EYE SHADOW',
     image: 'images/cards/card-87.png',
-    description: 'ai-icon: images/icons/eye.png (a simple black eye outline) with a matching grey offset shadow behind it (representing "EYE SHADOW").',
-    category: 'picture',
+    description: 'html: The word "EYE" in black, with a second grey copy of "EYE" offset behind it like a drop shadow (representing "EYE SHADOW").',
+    category: 'phrase',
   },
   {
     id: 'in-between-jobs',
@@ -713,7 +692,7 @@ export const PUZZLES = [
     id: 'too-big-to-ignore',
     answer: 'TOO BIG TO IGNORE',
     image: 'images/cards/card-95.png',
-    description: 'html: The text "TOO BIG TO IGNORE" written horizontally, where "BIG" is in a massive font and "IGNORE" is in a tiny font (representing "TOO BIG to IGNORE").',
+    description: 'html: Two rows, each a small lowercase word followed by the same word huge and uppercase: "big BIG" on the first row, "ignore IGNORE" on the second (representing "TOO BIG TO IGNORE" via the small-to-huge size jump on each word).',
     category: 'phrase',
   },
   {
@@ -826,6 +805,34 @@ export const PUZZLES = [
     answer: 'FAIRY GODMOTHER',
     image: 'images/cards/card-111.png',
     description: 'ai-icon: images/icons/fairy.png (a small illustrated fairy godmother figure with wings and a wand, no text) positioned in the upper left, composited via html with the word "MOTHER" in the upper right and images/icons/praying-hands.png (praying hands, no text) in the lower left (fairy = "FAIRY", praying hands = "GOD", + "MOTHER" = "FAIRY GODMOTHER").',
+    category: 'picture',
+  },
+  {
+    id: 'rain-shower',
+    answer: 'RAIN SHOWER',
+    image: 'images/cards/card-112.png',
+    description: 'ai-icon: images/icons/shower-head.png (a simple flat wall-mounted shower head, no text) composited via html with several copies of the word "RAIN" scattered below it at different sizes and slight rotations, like falling drops (shower head + falling RAIN = "RAIN SHOWER").',
+    category: 'picture',
+  },
+  {
+    id: 'overtime',
+    answer: 'OVERTIME',
+    image: 'images/cards/card-113.png',
+    description: 'html: A horizontal rule near the very top of the card, then a large empty gap, then the word "TIME" positioned near the bottom (the empty space "over" the word = "OVERTIME").',
+    category: 'wordplay',
+  },
+  {
+    id: 'sea-monster',
+    answer: 'SEA MONSTER',
+    image: 'images/cards/card-114.png',
+    description: 'html: A large green letter "C" drawn as a thick open-ended arc, with two googly eyes inside the bowl, a zigzag row of white teeth in the mouth opening, and two small arms ending in round hands sticking out from the sides (a monstrous letter "C" = "SEA" + "MONSTER").',
+    category: 'phrase',
+  },
+  {
+    id: 'meteor-shower',
+    answer: 'METEOR SHOWER',
+    image: 'images/cards/card-115.png',
+    description: 'ai-icon: images/icons/shower-head.png (a simple flat wall-mounted shower head, no text) composited via html: the word "MEAT", the 🫵 (pointing-at-you) emoji, and the letter "R" in a row, with the shower head below (MEAT sounds like "meet", 🫵 + "R" reads as "your", + shower head = "meet your shower" ≈ "METEOR SHOWER").',
     category: 'picture',
   },
 ];
