@@ -965,7 +965,7 @@ export const PUZZLES = [
     id: 'i-got-you',
     answer: 'I GOT YOU',
     image: 'images/cards/card-136.png',
-    description: 'html: The letter "I" on the left, with a curved arm reaching across and cradling under the letter "U" on the right, ending in a hand touching it (the letter "I" physically holding the letter "U" = "I GOT YOU").',
-    category: 'wordplay',
+    description: 'ai-icon: images/icons/i-hugging-u.png (a cute illustrated blue letter "I" character with a face, arms, and legs, hugging a smaller orange letter "U" character with a face) composited via html, centered on the card, no additional text (the letter "I" physically holding/hugging the letter "U" = "I GOT YOU").',
+    category: 'picture',
   },
 ];
