@@ -870,4 +870,25 @@ export const PUZZLES = [
     description: 'html: A human-shaped body wearing a formal cream barong with a button placket, dark trousers, and black shoes, topped with a rounded square "head" box containing the letter "P" instead of a face (Tagalog wordplay for "PANGULO", the Filipino word for president).',
     category: 'tagalog',
   },
+  {
+    id: 'polite',
+    answer: 'POLITE',
+    image: 'images/cards/card-122.png',
+    description: 'ai-icon: images/icons/light-bulb.png (a simple flat yellow light bulb, no text) composited via html with the word "PO" centered above it (Tagalog "PO" + light bulb, LIGHT sounding like "LITE" = "POLITE").',
+    category: 'tagalog',
+  },
+  {
+    id: 'design',
+    answer: 'DESIGN',
+    image: 'images/cards/card-123.png',
+    description: 'html: A green road-sign-style rectangle on a grey post, with the letter "D" centered on the sign in white (a "D" on a piece of signage = "DESIGN").',
+    category: 'wordplay',
+  },
+  {
+    id: 'long-time-no-see',
+    answer: 'LONG TIME NO SEE',
+    image: 'images/cards/card-124.png',
+    description: 'html: The letters "T", "I", "M", "E" spread far apart across one row (wide spacing = "LONG TIME"), with "ABDE" written below, tightly spaced, conspicuously missing the letter "C" (no "C" = "NO SEE") — representing "LONG TIME NO SEE".',
+    category: 'phrase',
+  },
 ];
