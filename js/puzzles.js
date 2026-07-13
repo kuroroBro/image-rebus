@@ -875,7 +875,7 @@ export const PUZZLES = [
     answer: 'POLITE',
     image: 'images/cards/card-122.png',
     description: 'ai-icon: images/icons/light-bulb.png (a simple flat yellow light bulb, no text) composited via html with the word "PO" centered above it (Tagalog "PO" + light bulb, LIGHT sounding like "LITE" = "POLITE").',
-    category: 'tagalog',
+    category: 'picture',
   },
   {
     id: 'design',
