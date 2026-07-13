@@ -891,4 +891,11 @@ export const PUZZLES = [
     description: 'html: The letters "T", "I", "M", "E" spread far apart across one row (wide spacing = "LONG TIME"), with "ABDE" written below, tightly spaced, conspicuously missing the letter "C" (no "C" = "NO SEE") — representing "LONG TIME NO SEE".',
     category: 'phrase',
   },
+  {
+    id: 'headquarter',
+    answer: 'HEADQUARTER',
+    image: 'images/cards/card-125.png',
+    description: 'html: A simple round head shape with two ears, and the text "25%" centered inside it (a HEAD containing a QUARTER, 25% = one quarter = "HEADQUARTER").',
+    category: 'wordplay',
+  },
 ];
