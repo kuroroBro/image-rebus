@@ -636,4 +636,10 @@ export const PUZZLES = [
     image: 'images/cards/card-100.png',
     description: 'html: The word "TOUCH" positioned at the very bottom of the card (representing "TOUCHDOWN").',
   },
+  {
+    id: 'break-a-leg',
+    answer: 'BREAK A LEG',
+    image: 'images/cards/card-101.png',
+    description: 'html: The word "LEG" split along a diagonal line into two halves, offset apart from each other (representing "BREAK A LEG").',
+  },
 ];
