@@ -937,7 +937,7 @@ export const PUZZLES = [
     id: 'up-for-grabs',
     answer: 'UP FOR GRABS',
     image: 'images/cards/card-131.png',
-    description: 'html: The word "GRABS" spelled backward as "SBARG", repeated 4 times stacked vertically (the stack reads upward = "UP", 4 repeats = "FOR" (four), "SBARG" backward = "GRABS" — "UP FOR GRABS").',
+    description: 'html: A 5-row by 4-column grid of letters — each row is one letter repeated 4 times ("S S S S" / "B B B B" / "A A A A" / "R R R R" / "G G G G"). Reading each column top to bottom spells "SBARG" (GRABS backward, stacked = "UP"), and there are 4 columns of it ("FOR", four) — "UP FOR GRABS".',
     category: 'phrase',
   },
   {
