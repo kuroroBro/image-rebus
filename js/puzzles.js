@@ -961,4 +961,11 @@ export const PUZZLES = [
     description: 'html: The word "NERVOUS" spelled out one letter per shattered, jagged shard, alternating dark red and black, each letter progressively lower and more rotated, cascading diagonally down the card like it\'s falling apart (NERVOUS + visibly breaking down = "NERVOUS BREAKDOWN").',
     category: 'phrase',
   },
+  {
+    id: 'i-got-you',
+    answer: 'I GOT YOU',
+    image: 'images/cards/card-136.png',
+    description: 'html: The letter "I" on the left, with a curved arm reaching across and cradling under the letter "U" on the right, ending in a hand touching it (the letter "I" physically holding the letter "U" = "I GOT YOU").',
+    category: 'wordplay',
+  },
 ];
