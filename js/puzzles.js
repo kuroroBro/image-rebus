@@ -898,4 +898,11 @@ export const PUZZLES = [
     description: 'html: A simple round head shape with two ears, and the text "25%" centered inside it (a HEAD containing a QUARTER, 25% = one quarter = "HEADQUARTER").',
     category: 'wordplay',
   },
+  {
+    id: 'tennis-shoes',
+    answer: 'TENNIS SHOES',
+    image: 'images/cards/card-126.png',
+    description: 'html: The word "ISSUES" written 10 times, scattered at random positions and angles across the card (count them: TEN "ISSUES", which said quickly sounds like "TENNIS SHOES").',
+    category: 'phrase',
+  },
 ];
