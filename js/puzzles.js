@@ -694,6 +694,12 @@ export const PUZZLES = [
     id: 'godfather',
     answer: 'GODFATHER',
     image: 'images/cards/card-110.png',
-    description: 'ai-icon: images/icons/praying-hands.png (two simple flat praying hands pressed together, no text) positioned in the lower right, composited via html with the word "FATHER" positioned in the upper right (praying hands = "GOD", + "FATHER" = "GODFATHER").',
+    description: 'ai-icon: images/icons/praying-hands.png (two simple flat praying hands pressed together, no text) positioned in the lower left, composited via html with the word "FATHER" positioned in the upper right (praying hands = "GOD", + "FATHER" = "GODFATHER").',
+  },
+  {
+    id: 'fairy-godmother',
+    answer: 'FAIRY GODMOTHER',
+    image: 'images/cards/card-111.png',
+    description: 'ai-icon: images/icons/fairy.png (a small illustrated fairy godmother figure with wings and a wand, no text) positioned just below the word "MOTHER" in the upper right, plus images/icons/praying-hands.png (praying hands, no text) in the lower left, composited via html (fairy = "FAIRY", praying hands = "GOD", + "MOTHER" = "FAIRY GODMOTHER").',
   },
 ];
