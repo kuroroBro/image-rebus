@@ -919,4 +919,18 @@ export const PUZZLES = [
     description: 'html: The phrase "NA FISH" written twice, stacked on two lines (two "NA FISH"es = "TU-NA FISH TU-NA FISH", TU sounding like "two" = "TUNA FISH").',
     category: 'phrase',
   },
+  {
+    id: 'standup-comedy',
+    answer: 'STANDUP COMEDY',
+    image: 'images/cards/card-129.png',
+    description: 'html: The word "STAND" spelled backward, "D"/"N"/"A"/"T"/"S", stacked vertically top to bottom, with ", D" (a comma then the letter D) positioned to the right — the raised, stacked-upward arrangement reads as "UP", and ", D" said aloud sounds like "comma-D" = "COMEDY" (DNATS backward = STAND, + UP arrangement, + COMEDY = "STANDUP COMEDY").',
+    category: 'phrase',
+  },
+  {
+    id: 'excuse-me',
+    answer: 'EXCUSE ME',
+    image: 'images/cards/card-130.png',
+    description: 'html: "X", then "QQQQQ" (five Q\'s in a row, like a queue), then "ME", all on one line (X + "queue" (said like the letter Q, which stands in for "cuse") + ME = "EXCUSE ME").',
+    category: 'phrase',
+  },
 ];
