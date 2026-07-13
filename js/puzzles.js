@@ -163,7 +163,7 @@ export const PUZZLES = [
     id: 'once-in-a-blue-moon',
     answer: 'ONCE IN A BLUE MOON',
     image: 'images/cards/card-17.png',
-    description: 'html: A solid blue (#2563eb) card background (instead of the usual white) with the word "MOON" in large white text, centered. Still has the usual black border.',
+    description: 'html: The usual plain white card, with the word "MOON" itself colored blue (#2563eb) instead of black, large and centered.',
     category: 'phrase',
   },
   {
