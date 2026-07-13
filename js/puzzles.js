@@ -652,7 +652,7 @@ export const PUZZLES = [
     id: 'meaning',
     answer: 'MEANING',
     image: 'images/cards/card-103.png',
-    description: 'html: The word "MENING" on a single line, with "ME" colored red and "NING" colored black (representing "ME" in "NING" = "MEANING").',
+    description: 'html: The word "NIMENG" on a single line, with "NI" and "NG" colored black and "ME" colored red in the middle (representing "ME" embedded in "NING" = "MEANING").',
   },
   {
     id: 'subtract',
@@ -688,6 +688,6 @@ export const PUZZLES = [
     id: 'teardrop',
     answer: 'TEARDROP',
     image: 'images/cards/card-109.png',
-    description: 'html: The word "TEAR" positioned near the top of the card, with a dashed vertical line trailing straight down from it toward the bottom, ending in a small teardrop shape (representing the word TEAR dropping from a high place = "TEARDROP").',
+    description: 'html: A dashed vertical line drops from the top of the card down to a ground line near the bottom, where the word "TEAR" lands tilted and sprawled across the ground line, like something dropped from a high place and landed in a sleeping/collapsed pose (representing "TEARDROP").',
   },
 ];
