@@ -188,11 +188,11 @@ export const PUZZLES = [
     category: 'picture',
   },
   {
-    id: 'cut-price',
-    answer: 'CUT PRICE',
+    id: 'price-cut',
+    answer: 'PRICE CUT',
     image: 'images/cards/card-21.png',
-    description: 'html: The word "PRICE" large and centered, with a red horizontal line cutting through the middle of it at a slight angle, like a strikethrough.',
-    category: 'phrase',
+    description: 'ai-icon: images/icons/scissors.png (a simple flat pair of open scissors, no text) composited via html: the word "PRICE" split into two offset halves along a diagonal line, with the scissors overlaid right at the cut (scissors cutting "PRICE" = "PRICE CUT").',
+    category: 'picture',
   },
   {
     id: 'big-deal',
@@ -370,8 +370,8 @@ export const PUZZLES = [
     id: 'ballpark-figure',
     answer: 'BALLPARK FIGURE',
     image: 'images/cards/card-48.png',
-    description: 'ai-icon: images/icons/baseball-diamond.png (a top-down baseball diamond infield path) composited via html with a large number "9" centered inside it (baseball park = "ballpark", number 9 = "figure").',
-    category: 'picture',
+    description: 'html: The word "PARK" on all four sides of the card — horizontal along the top and bottom edges, rotated vertical along the left and right edges — forming a hollow square frame, with "[ 8,500 ]" centered inside it (a numeric FIGURE enclosed by a square of "PARK" = "BALLPARK FIGURE").',
+    category: 'phrase',
   },
   {
     id: 'a-penny-for-your-thoughts',
