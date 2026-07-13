@@ -856,4 +856,11 @@ export const PUZZLES = [
     description: 'html: The word "DON" written 10 times, scattered at random positions and angles across the card (count the DONs: TEN "DON"s = "TENDON").',
     category: 'wordplay',
   },
+  {
+    id: 'tennis',
+    answer: 'TENNIS',
+    image: 'images/cards/card-120.png',
+    description: 'html: The word "KNEES" written 10 times, scattered at random positions and angles across the card (count them: TEN "KNEES", which sounds like "TEN-NIS" = "TENNIS").',
+    category: 'wordplay',
+  },
 ];
