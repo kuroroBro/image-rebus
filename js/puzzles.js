@@ -867,7 +867,7 @@ export const PUZZLES = [
     id: 'pangulo',
     answer: 'PANGULO',
     image: 'images/cards/card-121.png',
-    description: 'html: A full body figure (torso, arms, legs) with a large letter "P" standing in for the head instead of a circle (Tagalog wordplay for "PANGULO", the Filipino word for president).',
+    description: 'html: A human-shaped body (neck, shouldered torso, bent arms with hands, bent legs with feet) with a large letter "P" standing in for the head instead of a circle (Tagalog wordplay for "PANGULO", the Filipino word for president).',
     category: 'tagalog',
   },
 ];
