@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import {
   PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
   revealLetter, revealImage, startTimer, checkTimerExpired, timerRemainingMs, maskedAnswer,
+  checkGuess,
 } from '../js/game.js';
 
 const POOL = [
@@ -292,4 +293,18 @@ test('deck order is deterministic for a fixed rng (no accidental Math.random dep
   seed = 42;
   const gameB = createGame({}, POOL, rng);
   assert.deepStrictEqual(gameA.deck.map((p) => p.id), gameB.deck.map((p) => p.id));
+});
+
+test('checkGuess matches exactly, ignoring case and surrounding whitespace', () => {
+  assert.strictEqual(checkGuess('SUNFLOWER', 'sunflower'), true);
+  assert.strictEqual(checkGuess('SUNFLOWER', '  Sunflower  '), true);
+  assert.strictEqual(checkGuess('SUNFLOWER', 'SUN FLOWER'), false);
+  assert.strictEqual(checkGuess('SUNFLOWER', ''), false);
+});
+
+test('checkGuess requires punctuation/digits to be typed too, not stripped', () => {
+  assert.strictEqual(checkGuess('TEA-TIME', 'tea-time'), true);
+  assert.strictEqual(checkGuess('TEA-TIME', 'tea time'), false);
+  assert.strictEqual(checkGuess('24/7', '24/7'), true);
+  assert.strictEqual(checkGuess('24/7', '247'), false);
 });

@@ -190,3 +190,18 @@ export function maskedAnswer(puzzle) {
     isSpace: char === ' ',
   }));
 }
+
+// Solo mode's answer check: case-insensitive exact match with surrounding
+// whitespace trimmed and internal runs of whitespace collapsed. Unlike the
+// sibling games, answers here aren't restricted to A-Z + spaces — some
+// include hyphens, digits, or a slash (e.g. "TEA-TIME", "24/7") — so, same
+// as maskedAnswer/revealLetter already treat every non-space character as a
+// revealable letter slot, normalization here does not strip punctuation:
+// the player has to type it too.
+function normalizeGuess(s) {
+  return s.trim().toUpperCase().replace(/\s+/g, ' ');
+}
+
+export function checkGuess(answer, guess) {
+  return normalizeGuess(answer) === normalizeGuess(guess);
+}

@@ -1,6 +1,7 @@
 import {
   PHASE, TIMER_STATUS, createGame, startGame, awardPoint, skipPuzzle,
   revealLetter, revealImage, maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
+  checkGuess,
 } from './game.js';
 import { CATEGORIES, PUZZLES } from './puzzles.js';
 import {
@@ -13,7 +14,7 @@ const $ = (id) => document.getElementById(id);
 
 const SCREENS = [
   'screen-home', 'screen-setup', 'screen-host-lobby',
-  'screen-host-panel', 'screen-display', 'screen-gameover',
+  'screen-host-panel', 'screen-single-panel', 'screen-display', 'screen-gameover',
 ];
 
 function showScreen(id) {
@@ -24,13 +25,15 @@ function showScreen(id) {
 let settings = loadSettings();
 let game = null;        // Host: full state. Display: last redacted snapshot received.
 let room = null;        // { code, broadcast, close } (host) or { close } (display)
-let role = null;        // 'host' | 'display'
+let role = null;        // 'host' | 'display' | 'single'
 let peerCount = 0;
 let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
 // Host only, never sent over the network (the Display never gets the raw
 // answer regardless — see redactState). Resets to false every time a new
 // puzzle is dealt, so the Host has to tap to see the answer each round.
 let hostAnswerRevealed = false;
+let setupMode = 'host'; // 'host' | 'single'
+let singleAnswerVisible = false;
 
 const RESET_USED_CARDS_MESSAGE = 'All rebus cards have been used. Reset card data so cards can be reused?';
 
@@ -108,19 +111,19 @@ function broadcastState() {
   }
 }
 
-function createGameFromUnusedCards() {
-  const categoryPool = filterByCategory(PUZZLES, settings.categories);
+function createGameFromUnusedCards(gameSettings = settings) {
+  const categoryPool = filterByCategory(PUZZLES, gameSettings.categories);
   let puzzlePool = filterUnusedPuzzles(categoryPool);
   if (puzzlePool.length === 0) {
     if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
     resetUsedPuzzleIds();
     puzzlePool = categoryPool;
   }
-  return createGame(settings, puzzlePool);
+  return createGame(gameSettings, puzzlePool);
 }
 
 function markCurrentPuzzleUsed() {
-  if (role === 'host' && game?.puzzle?.id) markPuzzleUsed(game.puzzle.id);
+  if ((role === 'host' || role === 'single') && game?.puzzle?.id) markPuzzleUsed(game.puzzle.id);
 }
 
 // ---------- confetti (small, dependency-free) ----------
@@ -185,6 +188,15 @@ function readCheckedCategories() {
 }
 
 $('btn-host').addEventListener('click', () => {
+  openSetup('host');
+});
+
+$('btn-single').addEventListener('click', () => {
+  openSetup('single');
+});
+
+function openSetup(mode) {
+  setupMode = mode;
   $('input-team-a').value = settings.teamNames.a;
   $('input-team-b').value = settings.teamNames.b;
   $('input-target-score').value = String(settings.targetScore || 0);
@@ -192,8 +204,10 @@ $('btn-host').addEventListener('click', () => {
   $('input-timer').value = String(settings.timerSeconds || 0);
   renderCategoryChecks(settings.categories || []);
   $('setup-error').hidden = true;
+  $('btn-start-single').hidden = mode !== 'single';
+  $('btn-start-room').hidden = mode !== 'host';
   showScreen('screen-setup');
-});
+}
 
 $('btn-join').addEventListener('click', () => {
   const code = normalizeCode($('input-join-code').value);
@@ -225,9 +239,8 @@ $('btn-join').addEventListener('click', () => {
 // ==================================================================
 $('btn-setup-back').addEventListener('click', () => showScreen('screen-home'));
 
-$('btn-start-room').addEventListener('click', () => {
-  $('setup-error').hidden = true;
-  settings = {
+function readSetupSettings() {
+  return {
     targetScore: Number($('input-target-score').value),
     hintsEnabled: $('input-hints').checked,
     timerSeconds: Number($('input-timer').value),
@@ -237,6 +250,11 @@ $('btn-start-room').addEventListener('click', () => {
       b: $('input-team-b').value.trim() || 'Team B',
     },
   };
+}
+
+$('btn-start-room').addEventListener('click', () => {
+  $('setup-error').hidden = true;
+  settings = readSetupSettings();
   saveSettings(settings);
   game = createGameFromUnusedCards();
   if (!game) {
@@ -262,6 +280,30 @@ $('btn-start-room').addEventListener('click', () => {
       $('setup-error').hidden = false;
       $('setup-error').textContent = err.message;
     });
+});
+
+$('btn-start-single').addEventListener('click', () => {
+  $('setup-error').hidden = true;
+  settings = readSetupSettings();
+  saveSettings(settings);
+  game = createGameFromUnusedCards({
+    ...settings,
+    teamNames: { a: 'Solved', b: 'Skipped' },
+  });
+  if (!game) {
+    $('setup-error').hidden = false;
+    $('setup-error').textContent = 'No unused cards left. Reset card data to start a new game.';
+    return;
+  }
+  role = 'single';
+  room?.close?.();
+  room = null;
+  peerCount = 0;
+  singleAnswerVisible = false;
+  startGame(game);
+  markCurrentPuzzleUsed();
+  renderSinglePanel();
+  showScreen('screen-single-panel');
 });
 
 // ==================================================================
@@ -389,6 +431,15 @@ $('btn-award-b').addEventListener('click', () => {
 // ==================================================================
 function renderGameOver() {
   const { a, b } = game.teams;
+  if (role === 'single') {
+    $('winner-title').textContent = `You solved ${a.score}!`;
+    const scores = $('final-scores');
+    scores.innerHTML = '';
+    const span = document.createElement('span');
+    span.textContent = `Cards solved: ${a.score}`;
+    scores.appendChild(span);
+    return;
+  }
   $('winner-title').textContent = game.winner == null
     ? "It's a draw!"
     : `${game.teams[game.winner].name} wins!`;
@@ -402,15 +453,98 @@ function renderGameOver() {
 }
 
 $('btn-play-again').addEventListener('click', () => {
-  const nextGame = createGameFromUnusedCards();
+  const teamNames = role === 'single' ? { a: 'Solved', b: 'Skipped' } : settings.teamNames;
+  const nextGame = createGameFromUnusedCards({ ...settings, teamNames });
   if (!nextGame) return;
   game = nextGame;
   startGame(game);
   markCurrentPuzzleUsed();
-  hostAnswerRevealed = false;
-  renderHostPanel();
-  showScreen('screen-host-panel');
-  broadcastState();
+  if (role === 'single') {
+    singleAnswerVisible = false;
+    renderSinglePanel();
+    showScreen('screen-single-panel');
+  } else {
+    hostAnswerRevealed = false;
+    renderHostPanel();
+    showScreen('screen-host-panel');
+    broadcastState();
+  }
+});
+
+// ==================================================================
+// SINGLE PLAYER
+// ==================================================================
+function renderSinglePanel() {
+  const puzzle = game.puzzle;
+  $('single-target').hidden = !game.targetScore;
+  if (game.targetScore) $('single-target').textContent = `Goal ${game.targetScore}`;
+  $('single-progress').textContent = `Solved ${game.teams.a.score}`;
+  $('single-card-image').src = puzzle ? puzzle.image : '';
+  $('single-card-wrap').classList.toggle('blurred', !!puzzle && !puzzle.imageRevealed);
+  renderTiles($('single-tiles'), maskedAnswer(puzzle));
+  $('btn-single-hint').hidden = !game.hintsEnabled;
+
+  $('single-answer-card').hidden = !singleAnswerVisible;
+  $('single-answer').textContent = singleAnswerVisible && puzzle ? puzzle.answer : '';
+
+  updateTimerDisplay($('single-timer'), timerRemainingMs(game, Date.now()), !!game.timerSeconds);
+  $('btn-single-start-timer').disabled = !game.timerSeconds || game.timerStatus === TIMER_STATUS.RUNNING;
+}
+
+function afterSingleAction() {
+  markCurrentPuzzleUsed();
+  singleAnswerVisible = false;
+  const input = $('single-guess-input');
+  input.value = '';
+  input.classList.remove('correct', 'incorrect');
+  if (game.phase === PHASE.GAMEOVER) {
+    renderGameOver();
+    showScreen('screen-gameover');
+  } else {
+    renderSinglePanel();
+  }
+}
+
+$('btn-single-hint').addEventListener('click', () => {
+  if (revealLetter(game)) renderSinglePanel();
+});
+
+$('single-card-wrap').addEventListener('click', () => {
+  if (revealImage(game)) renderSinglePanel();
+});
+
+$('btn-single-show-answer').addEventListener('click', () => {
+  singleAnswerVisible = true;
+  renderSinglePanel();
+});
+
+$('btn-single-start-timer').addEventListener('click', () => {
+  if (startTimer(game, Date.now())) renderSinglePanel();
+});
+
+$('btn-single-skip').addEventListener('click', () => {
+  skipPuzzle(game);
+  afterSingleAction();
+});
+
+// Auto-validated instead of a self-judged "Got It" tap: the typed guess is
+// checked against puzzle.answer, so a correct guess is the only way to
+// score. A wrong guess shakes the input and lets the player retry — no
+// penalty, no advance.
+$('single-guess-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!game || game.phase !== PHASE.PLAYING || !game.puzzle) return;
+  const input = $('single-guess-input');
+  const guess = input.value;
+  if (!guess.trim()) return;
+  if (checkGuess(game.puzzle.answer, guess)) {
+    awardPoint(game, 'a');
+    afterSingleAction();
+  } else {
+    input.classList.remove('correct', 'incorrect');
+    void input.offsetWidth; // restart the shake animation on repeated wrong guesses
+    input.classList.add('incorrect');
+  }
 });
 
 // ==================================================================
@@ -490,6 +624,12 @@ setInterval(() => {
       afterHostAction();
     } else {
       updateTimerDisplay($('host-timer'), timerRemainingMs(game, Date.now()), !!game.timerSeconds);
+    }
+  } else if (role === 'single') {
+    if (game.timerSeconds && checkTimerExpired(game, Date.now())) {
+      afterSingleAction();
+    } else {
+      updateTimerDisplay($('single-timer'), timerRemainingMs(game, Date.now()), !!game.timerSeconds);
     }
   } else if (role === 'display') {
     updateTimerDisplay($('display-timer'), timerRemainingMs(game, Date.now() + clockOffset), !!game.timerSeconds);
